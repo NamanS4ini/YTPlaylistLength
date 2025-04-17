@@ -5,6 +5,7 @@ import { Button } from "flowbite-react";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import { useState } from "react";
 import { redirect } from "next/navigation";
+import { FaYoutube } from "react-icons/fa"
 
 export default function Component() {
   const validateURL = (url: string) => {
@@ -20,13 +21,36 @@ export default function Component() {
   const [url, setURL] = useState("")
   console.log(url);
   return (
-    <main className="flex p-10">
-    <div className="grid grid-flow-col justify-stretch relative space-x-4">
-      <FloatingLabel onChange={(e)=>setURL(e.target.value)}  variant="standard" label="Enter  Youtube " />
-    </div>
-    <Button className="" onClick={() => validateURL(url)}>
-        <HiOutlineArrowRight className="h-6 w-6" />
-      </Button>
+    <main className="min-h-screen flex items-center justify-center bg-zinc-950 text-white px-4">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 shadow-xl w-full max-w-md space-y-6">
+        {/* YouTube Icon */}
+        <div className="flex justify-center">
+          <FaYoutube className="text-red-600 w-12 h-12" />
+        </div>
+
+        {/* Heading */}
+        <div className="text-center">
+          <h1 className="text-2xl font-bold">YouTube Playlist Analyzer</h1>
+          <p className="text-zinc-400 text-sm mt-1">Check total length, video count, and more.</p>
+        </div>
+
+        {/* Input Field */}
+        <div>
+          <FloatingLabel
+            variant="standard"
+            label="Paste playlist URL"
+            onChange={(e) => setURL(e.target.value)}
+            className="w-full text-black"
+          />
+        </div>
+
+        {/* Submit Button */}
+        <div>
+          <Button className="w-full" onClick={() => validateURL(url)}>
+            Analyze Playlist
+          </Button>
+        </div>
+      </div>
     </main>
   );
 }
