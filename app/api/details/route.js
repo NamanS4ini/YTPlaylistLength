@@ -18,11 +18,12 @@ export async function GET(request) {
   // SECURITY CHECKS
 
   const origin = request.headers.get("origin");
-  console.log(origin);
   const allowedOrigins = [
-    null, // for localhost
     process.env.WEBSITE_LINK,
   ];
+  if (process.env.NODE_ENV === "development") {
+    allowedOrigins.push(null); // allow local manual access in dev
+  }
 
   if (!allowedOrigins.includes(origin)) {
     return Response.json("Origin not allowed", { status: 403 });
@@ -34,6 +35,8 @@ export async function GET(request) {
 
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
+  const start = searchParams.get("start");
+  const end = searchParams.get("end");
   const apiKey = process.env.API_KEY;
 // fetching the playlist data from youtube api
   const res = await fetch(
@@ -67,6 +70,9 @@ export async function GET(request) {
     //   ?? instead of || to avoid getting null for the position if it is 0
       position: item.snippet?.position ?? null,
       duration: null,
+      likes: null,
+      views: null,
+      comments: null,
     };
   });
 
@@ -94,37 +100,68 @@ videoIds = videoIds.map((arr) => arr.join(","));
 
 // fetch the duration of each video using the youtube api and the video ids
 //   the api call will return an array of objects with the id and duration of each video
-const durations = await Promise.all(
+const details = await Promise.all(
 videoIds.map(async (ids) => {
   const res = await fetch(
       `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${ids}&key=${apiKey}`
   )
   const data = await res.json();
+  const stats = await fetch(
+    `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${ids}&key=${apiKey}`
+  )
+  const statsData = await stats.json();
+  
   return data.items.map((item) => {
+    //   get the likes, views and comments from the stats data
+    const statsItem = statsData.items.find((statsItem) => statsItem.id === item.id);
+    const likes = statsItem?.statistics?.likeCount || null;
+    const views = statsItem?.statistics?.viewCount || null;
+    const comments = statsItem?.statistics?.commentCount || null;
+    //   get the duration from the contentDetails data
     const duration = item.contentDetails?.duration || null;
     const seconds = convertToSeconds(duration);
     return {
       id: item.id,
       duration: seconds,
+      likes: likes,
+      views: views,
+      comments: comments,
     };
   })
+
+
 }))
 
 //   flatten the array of arrays into a single array
-const flattenedItems = durations.flat();
+const flattenedItems = details.flat();
 
 //   loop through the items and add the duration to the items array using the id as the key
 
 let updatedItems = items.map((item) => {
-    const duration = flattenedItems.find((duration) => duration.id === item.id)?.duration ?? null;
+  const detailItem = flattenedItems.find((detailItem) => detailItem.id === item.id);
+  if (detailItem) {
     return {
-        ...item,
-        duration: duration,
+      ...item,
+      duration: detailItem.duration,
+      likes: parseInt(detailItem.likes),
+      views: parseInt(detailItem.views),
+      comments: parseInt(detailItem.comments),
     };
+  } else {
+    return {
+      ...item,
+      duration: null,
+      likes: null,
+      views: null,
+      comments: null,
+    };
+  }
 });
 
 // filter out the items that are null
 updatedItems = updatedItems.filter((item) => item.duration !== null);
+
+updatedItems = updatedItems.filter((item,index) => index >= start-1 && index <= end-1);
   
 //   console.log(updatedItems);
   return Response.json(updatedItems,{
