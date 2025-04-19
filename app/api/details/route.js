@@ -14,6 +14,24 @@ function convertToSeconds(duration) {
 
 
 export async function GET(request) {
+
+  // SECURITY CHECKS
+
+  const origin = request.headers.get("origin");
+  console.log(origin);
+  const allowedOrigins = [
+    null, // for localhost
+    process.env.WEBSITE_LINK,
+  ];
+
+  if (!allowedOrigins.includes(origin)) {
+    return Response.json("Origin not allowed", { status: 403 });
+  }
+
+
+    // API LOGIC 
+  
+
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
   const apiKey = process.env.API_KEY;
@@ -72,14 +90,48 @@ while (count < Math.ceil(items.length/50)) {
 // remove the null values from the array of arrays
 videoIds = videoIds.map((arr) => arr.filter((item) => item !== null));
 
+videoIds = videoIds.map((arr) => arr.join(","));
 
+// fetch the duration of each video using the youtube api and the video ids
+//   the api call will return an array of objects with the id and duration of each video
+const durations = await Promise.all(
+videoIds.map(async (ids) => {
+  const res = await fetch(
+      `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${ids}&key=${apiKey}`
+  )
+  const data = await res.json();
+  return data.items.map((item) => {
+    const duration = item.contentDetails?.duration || null;
+    const seconds = convertToSeconds(duration);
+    return {
+      id: item.id,
+      duration: seconds,
+    };
+  })
+}))
 
+//   flatten the array of arrays into a single array
+const flattenedItems = durations.flat();
 
-console.log(videoIds);
+//   loop through the items and add the duration to the items array using the id as the key
 
+let updatedItems = items.map((item) => {
+    const duration = flattenedItems.find((duration) => duration.id === item.id)?.duration ?? null;
+    return {
+        ...item,
+        duration: duration,
+    };
+});
 
-//   fetch the duration of each video in the playlist using the video id and add it to the playlist data
+// filter out the items that are null
+updatedItems = updatedItems.filter((item) => item.duration !== null);
   
 //   console.log(updatedItems);
-  return Response.json(items);
+  return Response.json(updatedItems,{
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': origin, // Set the CORS headers again here
+    },
+  });
 }

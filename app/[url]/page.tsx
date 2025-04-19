@@ -20,7 +20,7 @@ export default  function Page() {
   const [error, setError] = useState<string| null>(null)
   //Fetch data from backend
   useEffect(() => {
-    fetch(`api/details?id=${id}`)
+    fetch(`/api/details?id=${id}`)
       .then((res) => {
       if (!res.ok) {
         setError(res.statusText)
