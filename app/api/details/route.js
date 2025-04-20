@@ -18,19 +18,19 @@ export async function GET(request) {
   // SECURITY CHECKS
 
   const origin = request.headers.get("origin");
+  const referer = request.headers.get("referer");
+  
   const allowedOrigins = [
     process.env.WEBSITE_LINK,
   ];
-  console.log(allowedOrigins);
-  if (process.env.NODE_ENV === "development") {
-    allowedOrigins.push(null); // allow local manual access in dev
-  }
-
-  if (!allowedOrigins.includes(origin)) {
-    console.log("origin: ",origin);
+  
+  // allow null origin *only if* the referer is my website
+  if (origin === null && referer?.startsWith(process.env.WEBSITE_LINK)) {
+  } else if (!allowedOrigins.includes(origin)) {
+    console.log("Blocked origin:", origin);
     return Response.json("Origin not allowed", { status: 403 });
   }
-
+  
 
     // API LOGIC 
   
