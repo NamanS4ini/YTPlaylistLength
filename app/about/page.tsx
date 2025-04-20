@@ -1,7 +1,13 @@
 // app/about/page.tsx
 
+import { Metadata } from "next";
 import React from "react";
 
+
+export const metadata: Metadata = {
+  title: "About - Youtube Playlist Length Calculator",
+  description: "Learn about the features and privacy of the Youtube Playlist Length Calculator",
+};
 export default function AboutPage() {
   return (
     <main className="pt-20 min-h-screen bg-black text-gray-100 px-6 py-12 md:px-20">

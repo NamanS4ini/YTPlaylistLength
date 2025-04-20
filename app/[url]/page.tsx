@@ -25,8 +25,6 @@ type Data = {
 }
 
 // Type for Sort
-type Sort = "position" | "title" | "newest" | "oldest" | "views" | "likes" | "comments" | "duration";
-
 export default function Page() {
   function convertToHrs(seconds: number) {
 
@@ -43,23 +41,22 @@ export default function Page() {
   }
 
   function handelSort(e: React.ChangeEvent<HTMLSelectElement>) {
-    setSort(e.target.value as Sort)
     if (e.target.value === "position") {
-      setData(data?.sort((a, b) => a.position - b.position) || null)
+      setData(data?[...data].sort((a, b) => a.position - b.position) : null)
     } else if (e.target.value === "title") {
-      setData(data?.sort((a, b) => a.title.localeCompare(b.title)) || null)
+      setData(data?[...data].sort((a, b) => a.title.localeCompare(b.title)) : null)
     } else if (e.target.value === "newest") {
-      setData(data?.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()) || null)
+      setData(data?[...data].sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()) : null)
     } else if (e.target.value === "oldest") {
-      setData(data?.sort((a, b) => new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()) || null)
+      setData(data?[...data].sort((a, b) => new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()) : null)
     } else if (e.target.value === "views") {
-      setData(data?.sort((a, b) => b.views - a.views) || null)
+      setData(data?[...data].sort((a, b) => b.views - a.views) : null)
     } else if (e.target.value === "likes") {
-      setData(data?.sort((a, b) => (b.likes || 0) - (a.likes || 0)) || null)
+      setData(data?[...data].sort((a, b) => (b.likes || 0) - (a.likes || 0)) : null)
     } else if (e.target.value === "comments") {
-      setData(data?.sort((a, b) => (b.comments || 0) - (a.comments || 0)) || null)
+      setData(data?[...data].sort((a, b) => (b.comments || 0) - (a.comments || 0)) : null)
     } else if (e.target.value === "duration") {
-      setData((data?.sort((a, b) => Number(b.duration || 0) - Number(a.duration || 0)) || null))
+      setData((data?[...data].sort((a, b) => Number(b.duration || 0) - Number(a.duration || 0)) : null))
     }
   }
   function convertDate(dateString: string) {
@@ -81,7 +78,6 @@ export default function Page() {
   const start = searchParams.get('start') || "0";
   const end = searchParams.get('end') || "500";
 
-  const [sort, setSort] = useState<Sort>("position")
   const [data, setData] = useState<Data[] | null>(null);
   const [error, setError] = useState<string | null>(null)
   const [thumbnail, setThumbnail] = useState<boolean>(false)
