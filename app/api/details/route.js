@@ -28,6 +28,7 @@ export async function GET(request) {
   if (origin === null && referer?.startsWith(process.env.WEBSITE_LINK)) {
   } else if (!allowedOrigins.includes(origin)) {
     console.log("Blocked origin:", origin);
+    console.log("Blocked referer:", referer);
     return Response.json("Origin not allowed", { status: 403 });
   }
   
