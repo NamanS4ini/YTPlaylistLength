@@ -31,7 +31,6 @@ export async function GET(request) {
     console.log("Blocked referer:", referer);
     return Response.json("Origin not allowed", { status: 403 });
   }
-  
 
     // API LOGIC 
   

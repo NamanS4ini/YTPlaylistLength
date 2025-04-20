@@ -86,7 +86,6 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null)
   const [thumbnail, setThumbnail] = useState<boolean>(false)
   const [speed, setSpeed] = useState<string>("1")
-  console.log(sort);
   //Fetch data from backend
   useEffect(() => {
     fetch(`/api/details?id=${id}&start=${start}&end=${end}`)
@@ -95,9 +94,11 @@ export default function Page() {
         if (!res.ok) {
           setError(res.statusText)
           if (res.status === 404) {
-            throw new Error('Data not found (404)');
+            setError("Playlist not found")
+            return null;
           }
-          throw new Error('An error occurred while fetching the data');
+          setError("Invalid Playlist ID")
+          return null;
         }
         return res.json();
       })

@@ -12,10 +12,8 @@ export default function Component() {
     const regex = /^(https?:\/\/)?(www\.)?(youtube\.com\/playlist\?list=|youtu\.?be\/).+$/;
     if (regex.test(url)) {
       const videoId = url.split("list=")[1]?.split("&")[0];
-      console.log(videoId);
       const updatedStart: string = start === "" ? "0" : start;
       const updatedEnd: string = end === "" ? "500" : end;
-      console.log(updatedStart, updatedEnd);
       redirect(`/${videoId}?start=${updatedStart}&end=${updatedEnd}`);
     } else {
       toast.warn('Invalid URL. Please recheck your URL', {
@@ -70,7 +68,6 @@ export default function Component() {
   const [url, setURL] = useState("")
   const [start, setStart] = useState<string>("")
   const [end, setEnd] = useState<string>("")
-  console.log(url);
   return (
     <main className="min-h-screen bg-zinc-950 text-white px-6 py-24 flex flex-col items-center">
       <ToastContainer
