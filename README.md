@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎵 YouTube Playlist Analyzer
 
-## Getting Started
+Analyze any public YouTube playlist and view advanced statistics like total duration, likes, comments, views, and average video length. You can even sort videos by any of these metrics, set a range, and calculate the total duration based on different playback speeds.
 
-First, run the development server:
+## 🚀 Features
+
+- 🔎 **Total Playlist Stats**  
+  See total likes, views, comments, and total length of the entire playlist.
+
+- ⏱ **Accurate Duration Calculation**  
+  Choose your preferred playback speed and get the updated watch time accordingly.
+
+- 🧮 **Average Metrics**  
+  Get the average duration, likes, views, and comments per video.
+
+- 📊 **Sort Playlist**  
+  Sort videos by:
+  - Duration
+  - Likes
+  - Comments
+  - Views
+  - Newest
+  - Oldest
+
+- 🧠 **Smart Range Selector**  
+  Analyze only a specific range of videos in a playlist using start and end indices.
+
+- 🖼️ **Optional Thumbnails**  
+  Turn thumbnails on or off to reduce data usage and load times.
+
+- 💡 **Responsive UI with Dark Mode**  
+  Fully mobile-friendly and dark-mode ready.
+
+## 🛠️ Tech Stack
+
+- [Next.js](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [YouTube Data API v3](https://developers.google.com/youtube/v3)
+- Hosted on [Vercel](https://vercel.com)
+
+## 📦 Installation (For Local Dev)
+
+```bash
+git clone https://github.com/NamanS4ini/YTPlaylistLength
+cd YTPlaylistLength
+npm install
+```
+
+Create a `.env.local` file and add:
+
+```
+YOUTUBE_API_KEY=your_youtube_api_key
+WEBSITE_LINK=localhost:3000
+```
+
+Then run:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🌐 Live Demo
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🔗 [youtube-playlist-duration.vercel.app](https://youtube-playlist-duration.vercel.app)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧩 Contribute
 
-## Learn More
+Found a bug or want to add a feature?
 
-To learn more about Next.js, take a look at the following resources:
+1. [Open an issue](https://github.com/NamanS4ini/YTPlaylistLength/issues)
+2. Fork the repo
+3. Submit a PR
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+I may or may not respond depending on my availability, but feel free to contribute!
