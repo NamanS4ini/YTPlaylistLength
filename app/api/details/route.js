@@ -21,11 +21,13 @@ export async function GET(request) {
   const allowedOrigins = [
     process.env.WEBSITE_LINK,
   ];
+  console.log(allowedOrigins);
   if (process.env.NODE_ENV === "development") {
     allowedOrigins.push(null); // allow local manual access in dev
   }
 
   if (!allowedOrigins.includes(origin)) {
+    console.log(origin);
     return Response.json("Origin not allowed", { status: 403 });
   }
 
