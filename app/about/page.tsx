@@ -60,7 +60,7 @@ export default function AboutPage() {
         <section className="space-y-6">
         <h2 className="text-2xl font-semibold text-white">🔐 Privacy First</h2>
         <p className="text-gray-300">
-          This site doesn't track you. Your data stays on your device - no accounts, no analytics, no nonsense.
+          This site doesn&apos;t track you. Your data stays on your device - no accounts, no analytics, no nonsense.
         </p>
       </section>
 

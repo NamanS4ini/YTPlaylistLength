@@ -4,7 +4,7 @@ import { Button } from 'flowbite-react';
 import { useParams } from 'next/navigation'
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react'
-import { FaExclamationTriangle, FaYoutube } from 'react-icons/fa';
+import { FaExclamationTriangle } from 'react-icons/fa';
 import { PropagateLoader } from 'react-spinners';
 
 
@@ -120,11 +120,11 @@ export default function Page() {
       <h1 className="text-3xl font-bold mb-2">Invalid Playlist ID</h1>
 
       <p className="text-zinc-400 mb-4 max-w-md">
-        The playlist you're trying to access is either <span className="text-white font-medium">private</span>, <span className="text-white font-medium">unavailable</span>, or <span className="text-white font-medium">doesn't exist</span>.
+        The playlist you&apos;re trying to access is either <span className="text-white font-medium">private</span>, <span className="text-white font-medium">unavailable</span>, or <span className="text-white font-medium">doesn&apos;t exist</span>.
       </p>
 
       <p className="text-sm text-zinc-400 mb-6 max-w-md">
-        Double-check the link and make sure it's a valid public playlist. If the problem persists, try another one or <Link className='text-blue-400 hover:underline' href="https://github.com/NamanS4ini/YTPlaylistLength/issues">Contact Me</Link>.
+        Double-check the link and make sure it&apos;s a valid public playlist. If the problem persists, try another one or <Link className='text-blue-400 hover:underline' href="https://github.com/NamanS4ini/YTPlaylistLength/issues">Contact Me</Link>.
       </p>
 
       <Link href="/">
