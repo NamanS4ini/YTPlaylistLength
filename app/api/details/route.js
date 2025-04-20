@@ -27,7 +27,7 @@ export async function GET(request) {
   }
 
   if (!allowedOrigins.includes(origin)) {
-    console.log(origin);
+    console.log("origin: ",origin);
     return Response.json("Origin not allowed", { status: 403 });
   }
 
