@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Component() {
   const pathname = usePathname();
   return (
-    <Navbar fluid rounded className="bg-zinc-900 fixed w-full z-10 text-white dark:bg-zinc-900 dark:text-white">
+    <Navbar fluid rounded className="bg-zinc-900 fixed w-full z-50 text-white dark:bg-zinc-900 dark:text-white">
       <Link href="/">
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">YT Playlist Length</span>
       </Link>
