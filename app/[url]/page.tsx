@@ -1,7 +1,10 @@
 "use client"
+import Link from 'next/link'
+import { Button } from 'flowbite-react';
 import { useParams } from 'next/navigation'
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react'
+import { FaExclamationTriangle, FaYoutube } from 'react-icons/fa';
 import { PropagateLoader } from 'react-spinners';
 
 
@@ -26,7 +29,7 @@ type Sort = "position" | "title" | "newest" | "oldest" | "views" | "likes" | "co
 
 export default function Page() {
   function convertToHrs(seconds: number) {
-  
+
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60) || 0;
     const secs = seconds % 60 || 0;
@@ -103,66 +106,120 @@ export default function Page() {
   }, [])
   if (data === null && error === null) {
     return (
-      <div className='flex flex-col items-center justify-center min-h-screen bg-zinc-950 text-white px-4'>
-      <PropagateLoader color="#00abff" />
+      <div className='flex flex-col items-center justify-center pt-16 min-h-screen bg-zinc-950 text-white px-4'>
+        <PropagateLoader color="#00abff" />
       </div>
     )
-    
+
   }
   if (error) {
     return (
-      <div className='flex flex-col items-center min-h-screen bg-zinc-950 text-white px-4'>
-        <h1 className='text-4xl font-bold py-5'>Error</h1>
-        <p className='text-lg'>{error}</p>
-      </div>
+      <main className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center px-6 text-center">
+      <FaExclamationTriangle className="text-yellow-500 text-5xl mb-6" />
+
+      <h1 className="text-3xl font-bold mb-2">Invalid Playlist ID</h1>
+
+      <p className="text-zinc-400 mb-4 max-w-md">
+        The playlist you're trying to access is either <span className="text-white font-medium">private</span>, <span className="text-white font-medium">unavailable</span>, or <span className="text-white font-medium">doesn't exist</span>.
+      </p>
+
+      <p className="text-sm text-zinc-400 mb-6 max-w-md">
+        Double-check the link and make sure it's a valid public playlist. If the problem persists, try another one or <Link className='text-blue-400 hover:underline' href="https://github.com/NamanS4ini/YTPlaylistLength/issues">Contact Me</Link>.
+      </p>
+
+      <Link href="/">
+        <Button className='cursor-pointer'>Back to Home</Button>
+      </Link>
+    </main>
     )
   }
 
   if (data) {
     return (
-      <div className='flex flex-col items-center min-h-screen bg-zinc-950 text-white px-4'>
+      <div className='flex flex-col items-center bg-zinc-950 text-white px-4'>
         <div className='w-full max-w-6xl mx-auto'>
-          <h1 className='text-4xl font-bold py-5'>Playlist Details</h1>
+          <h1 className='text-4xl font-bold py-5'>
+            Playlist Details
+          </h1>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4 p-5 max-w-6xl w-full mx-auto'>
+            <div className='bg-zinc-900 hover:bg-zinc-800 items-center justify-center border h-fit  border-zinc-800 rounded-2xl p-8 shadow-xl w-full max-w-md space-y-6'>
+              <p className='mt-1 text-xl flex flex-col'>
+                Total Videos:
+                <span className='font-bold '>
+                  {data.length.toLocaleString("en-GB")}
+                </span>
+              </p>
+              <p className='mt-1 text-xl flex flex-col'>
+                Total Duration:
+                <span className='font-bold '>
+                  {convertToHrs(data.reduce((acc, item) => acc + (item.duration ? Number(item.duration) : 0), 0))}
+                </span>
+              </p>
+              <p className='mt-1 text-xl flex flex-col'>
+                Average Duration:
+                <span className='font-bold '>
+                  {convertToHrs(Math.round(data.reduce((acc, item) => acc + (item.duration ? Number(item.duration) : 0), 0) / data.length))}
+                </span>
+              </p>
+            </div>
+            <div className='bg-zinc-900 hover:bg-zinc-800 items-center h-fit justify-center border border-zinc-800 rounded-2xl p-8 shadow-xl w-full max-w-md space-y-6'>
+              <p className='mt-1 text-xl flex flex-col'>
+                total likes:
+                <span className='font-bold '>
+                  {data.reduce((acc, item) => acc + (item.likes || 0), 0).toLocaleString("en-GB")}
+                </span>
+              </p>
+              <p className='mt-1 text-xl flex flex-col'>
+                total views:
+                <span className='font-bold '>
+                  {(data.reduce((acc, item) => acc + item.views, 0)).toLocaleString("en-GB")}
+                </span>
+              </p>
+            </div>
+            <div className='bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-2xl p-8 shadow-xl w-full max-w-md space-y-6'>
+              <p className='text-xl'>
+                Playback Speed -&gt;
+              </p>
+              <p>1.25x:
+                <span className='font-bold '>
+                  {convertToHrs(Math.round(data.reduce((acc, item) => acc + (item.duration ? Number(item.duration) : 0), 0) / 1.25))}
+                </span>
+              </p>
+              <p>1.50x:
 
-            <div className='bg-zinc-900 items-center justify-center border h-fit  border-zinc-800 rounded-2xl p-8 shadow-xl w-full max-w-md space-y-6'>
-              <p className='mt-1 text-xl'>Total Videos: <span className='font-black'> {data.length.toLocaleString("en-GB")}</span></p>
-              <p className='mt-1 text-xl'>Total Duration: <span className='font-black'> {convertToHrs(data.reduce((acc, item) => acc + (item.duration ? Number(item.duration) : 0), 0))}</span></p>
-              <p className='mt-1 text-xl'>Average Duration: <span className='font-black'> {convertToHrs(Math.round(data.reduce((acc, item) => acc + (item.duration ? Number(item.duration) : 0), 0)/data.length))}</span></p>
-            </div>
-            <div className='bg-zinc-900 items-center h-fit justify-center border border-zinc-800 rounded-2xl p-8 shadow-xl w-full max-w-md space-y-6'>
-              <p className='mt-1 text-xl'>
-                total likes: <span className='font-black'>{data.reduce((acc, item) => acc + (item.likes || 0), 0).toLocaleString("en-GB")}</span> 
+                <span className='font-bold '> {convertToHrs(Math.round(data.reduce((acc, item) => acc + (item.duration ? Number(item.duration) : 0), 0) / 1.50))}
+                </span> </p>
+              <p>1.75x:
+                <span className='font-bold '> {convertToHrs(Math.round(data.reduce((acc, item) => acc + (item.duration ? Number(item.duration) : 0), 0) / 1.75))}
+                </span> </p>
+              <p>2.00x:
+                <span className='font-bold '> {convertToHrs(Math.round(data.reduce((acc, item) => acc + (item.duration ? Number(item.duration) : 0), 0) / 2.00))}
+                </span> </p>
+              <p>
+                <input className='w-36 p-2 border border-zinc-500' type="number" placeholder='custom speed' onChange={(e) => setSpeed(e.target.value)} value={speed} />
+                &nbsp;:&nbsp;
+                <span className='font-bold '>
+                  {convertToHrs(Math.round(data.reduce((acc, item) => acc + (item.duration ? Number(item.duration) : 0), 0) / (parseFloat(speed) || 1)))}
+                </span>
               </p>
-              <p className='mt-1 text-xl'>
-                total views: <span className='font-black'> {(data.reduce((acc, item) => acc + item.views, 0)).toLocaleString("en-GB")}</span>
-              </p>
-            </div>
-            <div className='bg-zinc-900 border border-zinc-800 rounded-2xl p-8 shadow-xl w-full max-w-md space-y-6'>
-             <p className='text-xl'>Playback Speed -&gt;</p>
-             <p>1.25x: <span className='font-black'> {convertToHrs(Math.round(data.reduce((acc, item) => acc + (item.duration ? Number(item.duration) : 0), 0)/1.25 ))} </span></p>
-             <p>1.50x: <span className='font-black'> {convertToHrs(Math.round(data.reduce((acc, item) => acc + (item.duration ? Number(item.duration) : 0), 0)/1.50 ))}</span> </p>
-             <p>1.75x: <span className='font-black'> {convertToHrs(Math.round(data.reduce((acc, item) => acc + (item.duration ? Number(item.duration) : 0), 0)/1.75 ))}</span> </p>
-             <p>2.00x: <span className='font-black'> {convertToHrs(Math.round(data.reduce((acc, item) => acc + (item.duration ? Number(item.duration) : 0), 0)/2.00 ))}</span> </p>
-             <p><input className='w-36 p-2 border border-zinc-500' type="number" placeholder='custom speed' onChange={(e)=> setSpeed(e.target.value)} value={speed} /> : <span className='font-black'>{convertToHrs(Math.round(data.reduce((acc, item) => acc + (item.duration ? Number(item.duration) : 0), 0)/(parseFloat(speed)||1) ))} </span> </p>
-              
+
             </div>
           </div>
         </div>
         <div>
 
-          <h2 className='text-4xl flex justify-between font-bold'>Videos in Playlist <span>
+          <h2 className='text-4xl flex md:flex-row items-center gap-5 flex-col justify-between font-bold'>
+            Videos in Playlist
+            <span>
+              <label className="inline-flex items-center cursor-pointer">
+                <input onChange={() => { handelThumb() }} type="checkbox" defaultChecked={thumbnail} className="sr-only peer" />
+                <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+                <span className="ms-3 text-2xl font-medium text-gray-900 dark:text-gray-300">Thumbnails</span>
+              </label>
 
-
-            <label className="inline-flex items-center cursor-pointer">
-              <input onChange={() => { handelThumb() }} type="checkbox" defaultChecked={thumbnail} className="sr-only peer" />
-              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
-              <span className="ms-3 text-2xl font-medium text-gray-900 dark:text-gray-300">Thumbnails</span>
-            </label>
-
-          </span>
+            </span>
           </h2>
-          <div className='flex gap-10 items-center p-5'>
+          <div className='flex gap-10 justify-center md:justify-start items-center p-5'>
             <h2 className='text-2xl flex justify-between font-bold'>Sort By: </h2>
             <select defaultValue="position" onChange={(e) => handelSort(e)} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
               <option value="position">Playlist Order</option>
@@ -177,16 +234,68 @@ export default function Page() {
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-5 max-w-6xl w-full mx-auto'>
             {data.map((item, index) => (
               <div key={item.id} className='bg-zinc-900 border flex flex-col justify-between border-zinc-800 hover:bg-zinc-800 ease-in-out duration-200 transition rounded-lg p-4 shadow-lg'>
-                <div className='text-zinc-400 mb-2'>#{item.position + 1} ({index + 1})</div>
                 <a href={`https://www.youtube.com/watch?v=${item.id}`} target='_blank' rel="noopener noreferrer">
-                  {thumbnail && <img src={item.thumbnail} alt={item.title} className='w-full h-auto rounded-lg mb-2' />}
-                  <h3 className='text-xl hover:underline font-semibold'>{item.title}</h3>
-                </a>
-                <div>
-                  <p className='text-zinc-400 flex justify-between'><span>{item.duration ? convertToHrs(Number(item.duration)) : "0"}</span> <span>{convertDate(item.publishedAt)}</span></p>
-                  <p className=' text-zinc-400 flex  justify-between'><span>Likes: {item.likes ? item.likes.toLocaleString("en-GB") : "Disabled"}</span> <span> Comments: {item.comments ? item.comments.toLocaleString("en-GB") : "Disabled"}</span></p>
-                  <p className=' text-zinc-400 flex justify-between'><a href={`https://www.youtube.com/channel/${item.channelId}`} target='_blank' rel="noopener noreferrer"> <span className='hover:underline'>{item.channelTitle}</span></a> <span>{item.views.toLocaleString("en-GB")} views</span></p>
+                <div className='text-zinc-400 flex justify-between mb-2'>
+                  <span>
+                    #{item.position + 1} ({index + 1})
+                  </span>
+                  <span>
+                    {!thumbnail && <span className='text-zinc-400'>{item.duration ? convertToHrs(Number(item.duration)) : "0"} </span>}
+                    
+                  </span>
                 </div>
+                <div className='relative'>
+
+                  {thumbnail && <img src={item.thumbnail} alt={item.title} className='rounded-lg mb-2' />}
+
+                  {thumbnail && <p className='absolute bottom-10 bg-black p-1 rounded-md text-sm right-1'>
+                    {item.duration ? convertToHrs(Number(item.duration)) : "0"}
+                  </p>}
+                
+                </div>
+                  <h3 className='text-xl hover:underline font-semibold'>
+                    {item.title}
+                  </h3>
+                  </a>
+                <div>
+
+                
+                <p className=' text-zinc-400 flex justify-between'>
+                    <a className='w-full hover:underline' href={`https://www.youtube.com/channel/${item.channelId}`} target='_blank' rel="noopener noreferrer">
+                      <span className=' text-zinc-300 hover:text-zinc-200'>
+                        {item.channelTitle}
+                      </span>
+                    </a>
+                  </p>
+                  <a href={`https://www.youtube.com/watch?v=${item.id}`} target='_blank' rel="noopener noreferrer">
+                
+                  <p className='text-zinc-400'>
+                    
+                  <span>
+                      {item.views.toLocaleString("en-GB")}&nbsp;
+                      views
+                    </span>
+                    <span>
+                      &nbsp;&bull;&nbsp;
+                    </span>
+                    <span >
+                      {convertDate(item.publishedAt)}
+                    </span>
+                  </p>
+                  <p className=' text-zinc-400'>
+                    <span>
+                      {item.likes ? item.likes.toLocaleString("en-GB") : "Disabled"} Likes
+                    </span>
+                    <span>
+                      &nbsp;&bull;&nbsp;
+                    </span>
+                    <span>
+                      {item.comments ? item.comments.toLocaleString("en-GB") : "Disabled"} Comments
+                    </span>
+                  </p>
+                  </a>
+                </div>
+                
               </div>
             ))}
           </div>

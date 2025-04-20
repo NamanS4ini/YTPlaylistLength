@@ -64,8 +64,8 @@ export async function GET(request) {
       id: item.snippet?.resourceId?.videoId || null,
       title: item.snippet?.title || "No Title",
       thumbnail: item.snippet?.thumbnails?.standard?.url || item.snippet?.thumbnails?.high?.url || item.snippet?.thumbnails?.medium?.url || item.snippet?.thumbnails?.default?.url || null,
-      channelTitle: item.snippet?.channelTitle || "Unknown Channel",
-      channelId: item.snippet?.channelId || null,
+      channelTitle: item.snippet?.videoOwnerChannelTitle || "Unknown Channel",
+      channelId: item.snippet?.videoOwnerChannelId || null,
       publishedAt: item.snippet?.publishedAt || null,
     //   ?? instead of || to avoid getting null for the position if it is 0
       position: item.snippet?.position ?? null,
@@ -76,7 +76,7 @@ export async function GET(request) {
     };
   });
 
-// TODO: make a way to get the duration of 50 videos at once instead of fetching each video one by one idea 1: make an array of arrays in which each array contains 50 video ids and then use the join method to join the array of arrays into a single array and then use the join method to join the array into a string and then use the string in the api call
+
 let count = 0;
 let videoIds = new Array(Math.ceil(items.length/50));
 for (let i = 0; i < videoIds.length; i++) {
@@ -172,3 +172,14 @@ updatedItems = updatedItems.filter((item,index) => index >= start-1 && index <= 
     },
   });
 }
+
+
+
+
+// FOR FUTURE ME OR WHOEVER IS READING THIS:
+
+// Wanna Add who's playlist it is?
+
+// https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=${id}&key=${API_KEY}
+
+// This returns the playlist owner'S data feel free to incorporate that into the response if you want to.

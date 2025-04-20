@@ -3,6 +3,7 @@
 import { FloatingLabel } from "flowbite-react";
 import { Button } from "flowbite-react";
 import { useState } from "react";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 import { redirect } from "next/navigation";
 import { FaYoutube } from "react-icons/fa"
 
@@ -17,7 +18,17 @@ export default function Component() {
       console.log(updatedStart, updatedEnd);
       redirect(`/${videoId}?start=${updatedStart}&end=${updatedEnd}`);
     } else {
-      alert("Invalid url");
+      toast.warn('Invalid URL. Please recheck your URL', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
     }
   };
   const handelStart = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +40,7 @@ export default function Component() {
       setStart("500");
       return;
     }
-    if(Number(e.target.value) >= Number(end) && end !== "") {
+    if (Number(e.target.value) >= Number(end) && end !== "") {
       setStart(end);
       return;
     }
@@ -45,7 +56,7 @@ export default function Component() {
       setEnd("0");
       return;
     }
-    if(Number(e.target.value) <= Number(start)) {
+    if (Number(e.target.value) <= Number(start)) {
       setEnd(start);
       return;
     }
@@ -57,52 +68,130 @@ export default function Component() {
   }
 
   const [url, setURL] = useState("")
-  const [start, setStart] = useState <string> ("")
+  const [start, setStart] = useState<string>("")
   const [end, setEnd] = useState<string>("")
   console.log(url);
   return (
-    <main className="min-h-screen flex items-center justify-center bg-zinc-950 text-white px-4">
-      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 shadow-xl w-full max-w-md space-y-6">
-        {/* YouTube Icon */}
-        <div className="flex justify-center">
-          <FaYoutube className="text-red-600 w-12 h-12" />
-        </div>
+    <main className="min-h-screen bg-zinc-950 text-white px-6 py-24 flex flex-col items-center">
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+        transition={Bounce}
+      />
+      {/* YouTube Logo */}
+      <FaYoutube className="text-red-600 w-16 h-16 mb-4" />
 
-        {/* Heading */}
-        <div className="text-center">
-          <h1 className="text-2xl font-bold">YouTube Playlist Analyzer</h1>
-          <p className="text-zinc-400 text-sm mt-1">Check total length, video count, and more.</p>
-        </div>
+      {/* Heading and Subtext */}
+      <h1 className="text-4xl font-bold text-center mb-2">
+        YouTube Playlist Analyzer
+      </h1>
+      <p className="text-zinc-400 text-center max-w-xl mb-10">
+        Instantly calculate total duration, likes, views, and more. Get insights before you even press play.
+      </p>
 
-        {/* Input Field */}
-        <div>
-          <FloatingLabel
-            variant="standard"
-            label="Paste playlist URL"
-            onChange={(e) => setURL(e.target.value)}
-            className="w-full text-black"
-          />
-          <div className="flex mt-4">
-<div className="flex justify-around flex-col gap-4">
+      {/* URL Input */}
+      <div className="w-full max-w-2xl flex flex-col gap-6">
+        <FloatingLabel
+          variant="filled"
+          label="Paste YouTube Playlist URL"
+          value={url}
+          onChange={(e) => setURL(e.target.value)}
+          className="w-full !bg-transparent cursor-text"
+        />
 
-          <label htmlFor="number-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start Range:</label>
-    <input type="number" value={start} onChange={(e)=> handelStart(e)} id="number-input" aria-describedby="helper-text-explanation" className="bg-gray-50 mr-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="0 (optional)" />
-</div>
-<div className="flex justify-around flex-col gap-4">
-
-    <label htmlFor="number-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">End Range:</label>
-    <input type="number" value={end} onChange={(e)=> handelEnd(e)} id="number-input" aria-describedby="helper-text-explanation" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="500 (optional)" />
-</div>
-        </div>
+        {/* Range Inputs */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label htmlFor="start" className="text-sm font-medium text-white block mb-1">
+              Start Range (optional)
+            </label>
+            <input
+              id="start"
+              type="number"
+              value={start}
+              onChange={handelStart}
+              placeholder="0"
+              className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
 
-        {/* Submit Button */}
-        <div>
-          <Button className="w-full" onClick={() => validateURL(url)}>
-            Analyze Playlist
-          </Button>
+          <div>
+            <label htmlFor="end" className="text-sm font-medium text-white block mb-1">
+              End Range (optional)
+            </label>
+            <input
+              id="end"
+              type="number"
+              value={end}
+              onChange={handelEnd}
+              placeholder="50"
+              className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
         </div>
+
+        {/* Button */}
+        <Button
+          className="w-full py-3 cursor-pointer text-lg mt-2"
+          onClick={() => validateURL(url)}
+        >
+          Analyze Playlist
+        </Button>
       </div>
+      <section className="mt-16 max-w-3xl w-full text-zinc-300 space-y-8">
+  <h2 className="text-2xl font-semibold text-white">❓ Frequently Asked Questions</h2>
+
+  <div>
+    <h3 className="font-medium text-white mb-1">🔗 What kind of playlist URLs are supported?</h3>
+    <p>Any public YouTube playlist link works — just paste the full URL and hit Analyze.</p>
+  </div>
+
+  <div>
+    <h3 className="font-medium text-white mb-1">🎯 What does Start/End Range mean?</h3>
+    <p>
+      If you only want to analyze a portion of the playlist, set a custom range.
+      For example, from video 5 to 20 - great for huge playlists.
+    </p>
+  </div>
+
+  <div>
+    <h3 className="font-medium text-white mb-1">🚀 Can I sort videos or filter them?</h3>
+    <p>
+      Yes! Once analyzed, you can sort videos by <span className="text-white font-semibold">length, likes, comments, views, and more</span>.
+    </p>
+  </div>
+
+  <div>
+    <h3 className="font-medium text-white mb-1">📦 Is it mobile-friendly?</h3>
+    <p>Absolutely — everything’s responsive and optimized for both desktops and phones.</p>
+  </div>
+
+  <div>
+    <h3 className="font-medium text-white mb-1">💡 Found a bug or have a suggestion?</h3>
+    <p>
+      Feel free to open an issue on{" "}
+      <a
+        href="https://github.com/NamanS4ini/YTPlaylistLength"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline text-white"
+      >
+        GitHub
+      </a>
+      . I might look at it... eventually 😄.
+    </p>
+  </div>
+</section>
     </main>
+
+
   );
 }
