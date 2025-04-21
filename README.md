@@ -50,8 +50,8 @@ npm install
 Create a `.env.local` file and add:
 
 ```
-YOUTUBE_API_KEY=your_youtube_api_key
-WEBSITE_LINK=localhost:3000
+API_KEY = your_youtube_api_key
+WEBSITE_LINK = localhost:3000
 ```
 
 Then run:
