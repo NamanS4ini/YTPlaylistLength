@@ -133,7 +133,7 @@ export default function Page() {
 
   if (data) {
     return (
-      <div className='flex flex-col items-center bg-zinc-950 text-white px-4'>
+      <div className='flex flex-col pt-16 items-center bg-zinc-950 text-white px-4'>
         <div className='w-full max-w-6xl mx-auto'>
           <h1 className='text-4xl font-bold py-5'>
             Playlist Details
