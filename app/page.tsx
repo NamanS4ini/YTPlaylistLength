@@ -9,6 +9,21 @@ import { FaYoutube } from "react-icons/fa"
 
 export default function Component() {
   const validateURL = (url: string) => {
+    
+    if(start > end) {
+      toast.warn('Start Can not be greater than end', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+      return;
+    }
     const regex = /^(https?:\/\/)?(www\.)?(youtube\.com\/playlist\?list=|youtu\.?be\/).+$/;
     if (regex.test(url)) {
       const videoId = url.split("list=")[1]?.split("&")[0];
@@ -34,12 +49,8 @@ export default function Component() {
       setStart("0");
       return;
     }
-    if (Number(e.target.value) >= 500 && end == "") {
+    if (Number(e.target.value) >= 500) {
       setStart("500");
-      return;
-    }
-    if (Number(e.target.value) >= Number(end) && end !== "") {
-      setStart(end);
       return;
     }
     setStart(e.target.value)
@@ -52,10 +63,6 @@ export default function Component() {
     }
     if (Number(e.target.value) < 0) {
       setEnd("0");
-      return;
-    }
-    if (Number(e.target.value) <= Number(start)) {
-      setEnd(start);
       return;
     }
     if (Number(e.target.value) >= 500) {

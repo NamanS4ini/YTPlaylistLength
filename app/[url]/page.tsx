@@ -24,7 +24,6 @@ type Data = {
   comments: number | null;
 }
 
-// Type for Sort
 export default function Page() {
   function convertToHrs(seconds: number) {
 
