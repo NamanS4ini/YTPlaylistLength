@@ -44,7 +44,8 @@ export default function Component() {
         transition: Bounce,
       });
     }
-  };
+  }
+
   const handelStart = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (Number(e.target.value) < 0) {
       setStart("0");

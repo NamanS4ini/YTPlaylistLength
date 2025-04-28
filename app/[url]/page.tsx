@@ -83,6 +83,12 @@ export default function Page() {
   const [speed, setSpeed] = useState<string>("1")
   //Fetch data from backend
   useEffect(() => {
+
+    if (parseInt(start) > parseInt(end)) {
+      setError("Start Can not be greater than End")
+      return
+    }
+
     fetch(`/api/details?id=${id}&start=${start}&end=${end}`)
       .then((res) => {
         setThumbnail(JSON.parse(localStorage.getItem("thumbnail") || "false"))
@@ -113,7 +119,7 @@ export default function Page() {
       <main className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center px-6 text-center">
       <FaExclamationTriangle className="text-yellow-500 text-5xl mb-6" />
 
-      <h1 className="text-3xl font-bold mb-2">Invalid Playlist ID</h1>
+      <h1 className="text-3xl font-bold mb-2">Invalid Playlist ID or Range</h1>
 
       <p className="text-zinc-400 mb-4 max-w-md">
         The playlist you&apos;re trying to access is either <span className="text-white font-medium">private</span>, <span className="text-white font-medium">unavailable</span>, or <span className="text-white font-medium">doesn&apos;t exist</span>.
