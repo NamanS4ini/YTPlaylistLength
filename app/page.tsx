@@ -4,10 +4,11 @@ import { FloatingLabel } from "flowbite-react";
 import { Button } from "flowbite-react";
 import { useState } from "react";
 import { Bounce, ToastContainer, toast } from "react-toastify";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FaYoutube } from "react-icons/fa"
 
 export default function Component() {
+  const router = useRouter();
   const validateURL = (url: string) => {
     
     if(start > end) {
@@ -29,7 +30,7 @@ export default function Component() {
       const videoId = url.split("list=")[1]?.split("&")[0];
       const updatedStart: string = start === "" ? "0" : start;
       const updatedEnd: string = end === "" ? "500" : end;
-      redirect(`/${videoId}?start=${updatedStart}&end=${updatedEnd}`);
+      router.push(`/${videoId}?start=${updatedStart}&end=${updatedEnd}`);
     } else {
       toast.warn('Invalid URL. Please recheck your URL', {
         position: "top-right",

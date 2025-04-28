@@ -286,7 +286,7 @@ export default function Page() {
                       &nbsp;&bull;&nbsp;
                     </span>
                     <span>
-                      {item.comments ? item.comments.toLocaleString("en-GB") : "Disabled"} Comments
+                      {item.comments != null ? item.comments.toLocaleString("en-GB") : "Disabled"} Comments
                     </span>
                   </p>
                   </a>
