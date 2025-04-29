@@ -11,7 +11,7 @@ export default function Component() {
   const router = useRouter();
   const validateURL = (url: string) => {
     
-    if(start > end) {
+    if(start > end && end != "") {
       toast.warn('Start Can not be greater than end', {
         position: "top-right",
         autoClose: 5000,
@@ -138,7 +138,7 @@ export default function Component() {
               type="number"
               value={end}
               onChange={handelEnd}
-              placeholder="50"
+              placeholder="500"
               className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
