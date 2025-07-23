@@ -6,7 +6,6 @@ import { Button } from "flowbite-react";
 import { useState } from "react";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { FaYoutube } from "react-icons/fa"
 
 export default function Component() {
   const router = useRouter();
