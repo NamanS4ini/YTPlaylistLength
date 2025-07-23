@@ -1,6 +1,7 @@
 "use client";
 
 import { FloatingLabel } from "flowbite-react";
+import Image from "next/image";
 import { Button } from "flowbite-react";
 import { useState } from "react";
 import { Bounce, ToastContainer, toast } from "react-toastify";
@@ -9,6 +10,7 @@ import { FaYoutube } from "react-icons/fa"
 
 export default function Component() {
   const router = useRouter();
+  const [validated, setValidated] = useState(false);
   const validateURL = (url: string) => {
     
     if(start > end && end != "") {
@@ -27,6 +29,7 @@ export default function Component() {
     }
     const regex = /^(https?:\/\/)?(www\.)?(youtube\.com\/playlist\?list=|youtu\.?be\/).+$/;
     if (regex.test(url)) {
+      setValidated(true);
       const videoId = url.split("list=")[1]?.split("&")[0];
       const updatedStart: string = start === "" ? "0" : start;
       const updatedEnd: string = end === "" ? "500" : end;
@@ -93,7 +96,7 @@ export default function Component() {
         transition={Bounce}
       />
       {/* YouTube Logo */}
-      <FaYoutube className="text-red-600 w-16 h-16 mb-4" />
+      <Image src="/youtube.svg" alt="YouTube Logo" width={64} height={64} />
 
       {/* Heading and Subtext */}
       <h1 className="text-4xl font-bold text-center mb-2">
@@ -145,12 +148,19 @@ export default function Component() {
         </div>
 
         {/* Button */}
-        <Button
-          className="w-full py-3 cursor-pointer text-lg mt-2"
-          onClick={() => validateURL(url)}
-        >
-          Analyze Playlist
-        </Button>
+        {validated ? (
+          <Button className="w-full py-3 text-lg mt-2 flex items-center justify-center" disabled>
+            <Image src="/spinner.svg" alt="Loading..." width={20} height={20} />
+            Analyzing...
+          </Button>
+        ) : (
+          <Button
+            className="w-full py-3 cursor-pointer text-lg mt-2"
+            onClick={() => validateURL(url)}
+          >
+            Analyze Playlist
+          </Button>
+        )}
       </div>
       <section className="mt-16 max-w-3xl w-full text-zinc-300 space-y-8">
   <h2 className="text-2xl font-semibold text-white">❓ Frequently Asked Questions</h2>
