@@ -1,4 +1,5 @@
 "use client"
+import Image from 'next/image';
 import Link from 'next/link'
 import { Button } from 'flowbite-react';
 import { useParams } from 'next/navigation'
@@ -13,13 +14,13 @@ import { PropagateLoader } from 'react-spinners';
 type Data = {
   id: string;
   title: string;
-  thumbnail: string;
-  channelTitle: string;
-  channelId: string;
+  thumbnail?: string;
+  channelTitle?: string;
+  channelId?: string;
   duration: string | null;
   publishedAt: string;
   position: number;
-  views: number;
+  views: number | null;
   likes: number | null;
   comments: number | null;
 }
@@ -49,7 +50,7 @@ export default function Page() {
     } else if (e.target.value === "oldest") {
       setData(data?[...data].sort((a, b) => new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()) : null)
     } else if (e.target.value === "views") {
-      setData(data?[...data].sort((a, b) => b.views - a.views) : null)
+      setData(data?[...data].sort((a, b) => (b.views || 0) - (a.views || 0)) : null)
     } else if (e.target.value === "likes") {
       setData(data?[...data].sort((a, b) => (b.likes || 0) - (a.likes || 0)) : null)
     } else if (e.target.value === "comments") {
@@ -174,7 +175,7 @@ export default function Page() {
               <p className='mt-1 text-xl flex flex-col'>
                 total views:
                 <span className='font-bold '>
-                  {(data.reduce((acc, item) => acc + item.views, 0)).toLocaleString("en-GB")}
+                  {(data.reduce((acc, item) => acc + (item.views || 0), 0)).toLocaleString("en-GB")}
                 </span>
               </p>
             </div>
@@ -248,7 +249,7 @@ export default function Page() {
                 </div>
                 <div className='relative'>
 
-                  {thumbnail && <img src={item.thumbnail} alt={item.title} className='rounded-lg mb-2' />}
+                  {thumbnail && <Image width={330} height={250} src={item.thumbnail || ''} alt={item.title} className='rounded-lg mb-2' />}
 
                   {thumbnail && <p className='absolute bottom-10 bg-black p-1 rounded-md text-sm right-1'>
                     {item.duration ? convertToHrs(Number(item.duration)) : "0"}
@@ -274,7 +275,7 @@ export default function Page() {
                   <p className='text-zinc-400'>
                     
                   <span>
-                      {item.views.toLocaleString("en-GB")}&nbsp;
+                      {item.views?.toLocaleString("en-GB")}&nbsp;
                       views
                     </span>
                     <span>
