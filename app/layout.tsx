@@ -18,7 +18,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Youtube Playlist Length Calculator",
   description: "Calculate the total length, Average Length, total likes of a Youtube playlist",
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "",
+  },
 };
+
+
 
 export default function RootLayout({
   children,
