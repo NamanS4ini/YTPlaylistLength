@@ -20,6 +20,9 @@ export default function Component() {
         <Link href="/" className={`${pathname === "/" ? "text-zinc-50 m-2" : "text-zinc-400 m-2"}`}>
           Home
         </Link>
+        <Link href="/saved" className={`${pathname === "/saved" ? "text-zinc-50 m-2" : "text-zinc-400 m-2"}`}>
+          Saved
+        </Link>
         <Link href="/about" className={`${pathname === "/about" ? "text-zinc-50 m-2" : "text-zinc-400 m-2"}`} >About</Link>
       </NavbarCollapse>
     </Navbar>

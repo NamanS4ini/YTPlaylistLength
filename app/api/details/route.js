@@ -51,6 +51,7 @@ export async function GET(request) {
 //   if the playlist data is found then see if there is a next page token and fetch the next page data (yt by default returns 50 items)
 //   if there is a next page token then fetch the next page data and push it to the playlist data
   const playlistData = await res.json();
+  console.log(playlistData);
   let nextPageToken = playlistData.nextPageToken;
   while (nextPageToken) {
     const res2 = await fetch(
@@ -164,7 +165,22 @@ let updatedItems = items.map((item) => {
 updatedItems = updatedItems.filter((item) => item.duration !== null);
 
 updatedItems = updatedItems.filter((item,index) => index >= start-1 && index <= end-1);
-  
+
+let playlistDetails = await fetch(`https://www.googleapis.com/youtube/v3/playlists?key=${apiKey}&id=${id}&part=id,snippet&fields=items(id,snippet(title,channelId,channelTitle,thumbnails(maxres)))`);
+playlistDetails = await playlistDetails.json();
+playlistDetails = playlistDetails.items?.[0] ? {
+  id: playlistDetails.items[0].id,
+  title: playlistDetails.items[0].snippet?.title,
+  channelId: playlistDetails.items[0].snippet?.channelId,
+  channelTitle: playlistDetails.items[0].snippet?.channelTitle,
+  thumbnail: playlistDetails.items[0].snippet?.thumbnails?.maxres?.url || playlistDetails.items[0].snippet?.thumbnails?.high?.url || playlistDetails.items[0].snippet?.thumbnails?.medium?.url || playlistDetails.items[0].snippet?.thumbnails?.default?.url || null,
+} : null;
+
+updatedItems = {
+  playlistData: playlistDetails || null,
+  videoData: updatedItems
+};
+
 //   console.log(updatedItems);
   return Response.json(updatedItems,{
     status: 200,
