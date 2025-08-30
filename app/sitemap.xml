@@ -9,12 +9,17 @@
 
 <url>
   <loc>https://youtube-playlist-duration.vercel.app/</loc>
-  <lastmod>2025-08-29T01:58:25+00:00</lastmod>
+  <lastmod>2025-08-30T01:24:20+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
+  <loc>https://youtube-playlist-duration.vercel.app/saved</loc>
+  <lastmod>2025-08-30T01:24:20+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
   <loc>https://youtube-playlist-duration.vercel.app/about</loc>
-  <lastmod>2025-08-29T01:58:25+00:00</lastmod>
+  <lastmod>2025-08-30T01:24:20+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 

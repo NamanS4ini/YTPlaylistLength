@@ -170,7 +170,7 @@ export default function Component() {
 
         <div>
           <h3 className="font-medium text-white mb-1">🔗 What kind of playlist URLs are supported?</h3>
-          <p>Any public YouTube playlist link works — just paste the full URL and hit Analyze.</p>
+          <p>Any public YouTube playlist link works - just paste the full URL and hit Analyze.</p>
         </div>
 
         <div>
