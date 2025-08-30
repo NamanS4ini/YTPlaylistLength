@@ -22,60 +22,68 @@ export default function AboutPage() {
         <section className="space-y-6">
           <h2 className="text-2xl font-semibold text-white">⚡ Sort with Power</h2>
           <p className="text-gray-300">
-            Sort any playlist your way - by video length, views, likes, or even comment count. No more scrolling endlessly to find that one perfect video.
+            Sort any playlist your way, by <span className="font-medium text-white">length, views, likes, or comments</span>.
+            No more endless scrolling to find that one perfect video.
           </p>
         </section>
 
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">⏱ Speed Watch Time</h2>
+          <h2 className="text-2xl font-semibold text-white">⏱ Smarter Watch Time</h2>
           <p className="text-gray-300">
-            Curious how long it would take to watch the playlist at 1.5x or 2x speed? We calculate real-time durations based on your preferred playback speed.
+            Wondering how long a playlist takes at <span className="font-medium text-white">1.25x, 1.5x, or 2x speed</span>?
+            Get real-time calculations instantly.
           </p>
         </section>
 
         <section className="space-y-6">
           <h2 className="text-2xl font-semibold text-white">📉 Data-Friendly Mode</h2>
           <p className="text-gray-300">
-            Want a faster experience or trying to save data? You can <span className="font-medium text-white">toggle off thumbnails</span> to load just the essentials. Great for slower connections or distraction-free browsing.
+            On a slow connection or just want focus?
+            <span className="font-medium text-white"> Toggle off thumbnails</span> for a lightweight, distraction-free experience.
           </p>
         </section>
 
         <section className="space-y-6">
           <h2 className="text-2xl font-semibold text-white">📊 Playlist Stats</h2>
           <p className="text-gray-300">
-            Instantly see the total number of likes, comments, views, and even the <span className="font-medium text-white">average video duration</span>. Know the vibe of a playlist before diving in.
+            Get insights at a glance, total likes, comments, views, and the
+            <span className="font-medium text-white"> average video duration</span>.
+            Know the vibe before you dive in.
+          </p>
+        </section>
+
+        <section className="space-y-6">
+          <h2 className="text-2xl font-semibold text-white">🔐 Privacy First</h2>
+          <p className="text-gray-300">
+            This site doesn&apos;t track you. <span className="font-medium text-white">Saved playlists and settings stay only on your device</span>,
+            no accounts, no nonsense.
           </p>
         </section>
 
         <section className="space-y-6">
           <h2 className="text-2xl font-semibold text-white">🤝 Contribute</h2>
           <p className="text-gray-300">
-            Found a bug? Got a feature idea? Head over to{" "}
+            Found a bug? Got a feature idea? Open an issue on{" "}
             <a
               href="https://github.com/NamanS4ini/YTPlaylistLength"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-400 underline"
             >
-              GitHub Issues
+              GitHub
             </a>{" "}
-            and open a ticket. I might look at it… eventually 😄.
+            and help shape the project.
           </p>
         </section>
 
         <section className="space-y-6">
-        <h2 className="text-2xl font-semibold text-white">🔐 Privacy First</h2>
-        <p className="text-gray-300">
-          This site doesn&apos;t track you. Your data stays on your device - no accounts, no analytics, no nonsense.
-        </p>
-      </section>
+          <h2 className="text-2xl font-semibold text-white">🚀 Roadmap</h2>
+          <p className="text-gray-300">
+            Coming soon: <span className="text-white font-medium">favoriting playlists, exporting data, custom sort settings</span>,
+            and maybe even more surprises 👀.
+          </p>
+        </section>
 
-      <section className="space-y-6">
-        <h2 className="text-2xl font-semibold text-white">🚀 Roadmap</h2>
-        <p className="text-gray-300">
-          Features like <span className="text-white font-medium">favoriting playlists, exporting data, and saving sort settings</span> might land in the future.
-        </p>
-      </section>
 
 
         <footer className="pt-10 border-t border-gray-800 text-sm text-gray-500">

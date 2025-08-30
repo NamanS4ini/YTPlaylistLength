@@ -4,6 +4,7 @@ import { FloatingLabel } from "flowbite-react";
 import { Button } from "flowbite-react";
 import { useState } from "react";
 import { Bounce, ToastContainer, toast } from "react-toastify";
+import { CiBookmark } from "react-icons/ci";
 import { useRouter } from "next/navigation";
 import { FaYoutube } from "react-icons/fa"
 
@@ -11,8 +12,8 @@ export default function Component() {
   const router = useRouter();
   const [validated, setValidated] = useState(false);
   const validateURL = (url: string) => {
-    
-    if(start > end && end != "") {
+
+    if (start > end && end != "") {
       toast.warn('Start Can not be greater than end', {
         position: "top-right",
         autoClose: 5000,
@@ -165,49 +166,63 @@ export default function Component() {
         )}
       </div>
       <section className="mt-16 max-w-3xl w-full text-zinc-300 space-y-8">
-  <h2 className="text-2xl font-semibold text-white">❓ Frequently Asked Questions</h2>
+        <h2 className="text-2xl font-semibold text-white">❓ Frequently Asked Questions</h2>
 
-  <div>
-    <h3 className="font-medium text-white mb-1">🔗 What kind of playlist URLs are supported?</h3>
-    <p>Any public YouTube playlist link works — just paste the full URL and hit Analyze.</p>
-  </div>
+        <div>
+          <h3 className="font-medium text-white mb-1">🔗 What kind of playlist URLs are supported?</h3>
+          <p>Any public YouTube playlist link works — just paste the full URL and hit Analyze.</p>
+        </div>
 
-  <div>
-    <h3 className="font-medium text-white mb-1">🎯 What does Start/End Range mean?</h3>
-    <p>
-      If you only want to analyze a portion of the playlist, set a custom range.
-      For example, from video 5 to 20 - great for huge playlists.
-    </p>
-  </div>
+        <div>
+          <h3 className="font-medium text-white mb-1">🎯 What does Start/End Range mean?</h3>
+          <p>
+            If you only want to analyze a portion of the playlist, set a custom range.
+            For example, from video 5 to 20 - great for huge playlists.
+          </p>
+        </div>
 
-  <div>
-    <h3 className="font-medium text-white mb-1">🚀 Can I sort videos or filter them?</h3>
-    <p>
-      Yes! Once analyzed, you can sort videos by <span className="text-white font-semibold">length, likes, comments, views, and more</span>.
-    </p>
-  </div>
+        <div>
+          <h3 className="font-medium text-white mb-1">🚀 Can I sort videos or filter them?</h3>
+          <p>
+            Yes! Once analyzed, you can sort videos by <span className="text-white font-semibold">length, likes, comments, views, and more</span>.
+          </p>
+        </div>
 
-  <div>
-    <h3 className="font-medium text-white mb-1">📦 Is it mobile-friendly?</h3>
-    <p>Absolutely — everything’s responsive and optimized for both desktops and phones.</p>
-  </div>
+        <div>
+          <h3 className="font-medium text-white mb-1">📦 Is it mobile-friendly?</h3>
+          <p>Absolutely, everything’s responsive and optimized for both desktops and phones.</p>
+        </div>
 
-  <div>
-    <h3 className="font-medium text-white mb-1">💡 Found a bug or have a suggestion?</h3>
-    <p>
-      Feel free to open an issue on{" "}
-      <a
-        href="https://github.com/NamanS4ini/YTPlaylistLength"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="underline text-white"
-      >
-        GitHub
-      </a>
-      . I might look at it... eventually 😄.
-    </p>
-  </div>
-</section>
+        <div>
+          <h3 className="font-medium text-white mb-1">📑 Can I save playlists for later?</h3>
+          <p>
+            Yep! While viewing a playlist, just press{" "}
+            <CiBookmark size={20} className="inline text-current" />
+            and it’ll be saved for quick access later.
+            <span className="block mt-1 text-zinc-400 text-sm">
+              🔒 All saved playlists stay only on <span className="text-white font-semibold">your device</span>,
+              nothing is uploaded or stored on our servers.
+            </span>
+          </p>
+        </div>
+
+        <div>
+          <h3 className="font-medium text-white mb-1">💡 Found a bug or have a suggestion?</h3>
+          <p>
+            Feel free to open an issue on{" "}
+            <a
+              href="https://github.com/NamanS4ini/YTPlaylistLength"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-white"
+            >
+              GitHub
+            </a>
+            . I might look at it... eventually 😄.
+          </p>
+        </div>
+      </section>
+
     </main>
 
 

@@ -127,7 +127,6 @@ export default function Page() {
 
     fetch(`/api/details?id=${id}&start=${start}&end=${end}`)
       .then((res) => {
-        setThumbnail(JSON.parse(localStorage.getItem("thumbnail") || "false"))
         if (!res.ok) {
           setError(res.statusText)
           if (res.status === 404) {
@@ -145,10 +144,10 @@ export default function Page() {
       })
       .catch((error) => console.error(error.message));
 
-    // check if current playlist is bookmarked
+      // check if current playlist is bookmarked
+    setThumbnail(JSON.parse(localStorage.getItem("thumbnail") || "false"))
     const savedPlaylists = JSON.parse(localStorage.getItem('bookmarks') || '[]');
     const isBookmarked = savedPlaylists.some((playlist: { id: string }) => playlist.id === id);
-    console.log(isBookmarked);
     setIsBookmarked(isBookmarked);
 
   }, []);
@@ -163,7 +162,7 @@ export default function Page() {
   }
   if (error) {
     return (
-      <main className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center px-6 text-center">
+      <main className="min-h-dvh md:min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center px-6 text-center">
         <FaExclamationTriangle className="text-yellow-500 text-5xl mb-6" />
 
         <h1 className="text-3xl font-bold mb-2">Invalid Playlist ID or Range</h1>

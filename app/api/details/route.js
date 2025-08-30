@@ -51,7 +51,6 @@ export async function GET(request) {
 //   if the playlist data is found then see if there is a next page token and fetch the next page data (yt by default returns 50 items)
 //   if there is a next page token then fetch the next page data and push it to the playlist data
   const playlistData = await res.json();
-  console.log(playlistData);
   let nextPageToken = playlistData.nextPageToken;
   while (nextPageToken) {
     const res2 = await fetch(
@@ -181,7 +180,6 @@ updatedItems = {
   videoData: updatedItems
 };
 
-//   console.log(updatedItems);
   return Response.json(updatedItems,{
     status: 200,
     headers: {
