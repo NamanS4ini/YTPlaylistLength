@@ -154,7 +154,7 @@ export default function Page() {
 
   if (videoData === null && error === null) {
     return (
-      <div className='flex flex-col items-center justify-center pt-16 min-h-screen bg-zinc-950 text-white px-4'>
+      <div className='flex flex-col items-center justify-center pt-16 min-h-dvh md:min-h-screen bg-zinc-950 text-white px-4'>
         <PropagateLoader color="#00abff" />
       </div>
     )
@@ -187,7 +187,7 @@ export default function Page() {
       <div className='flex flex-col pt-16 items-center bg-zinc-950 text-white px-4'>
         <div className='w-full max-w-6xl mx-auto'>
           <div className='flex items-center justify-between gap-4 py-5'>
-            <h1 className='text-4xl font-bold'>
+            <h1 className='text-xl md:text-4xl font-bold'>
               <a className='hover:underline' href={`https://www.youtube.com/playlist?list=${playlistData?.id}`} target="_blank" rel="noopener noreferrer">
                 {playlistData?.title}
               </a>
