@@ -17,11 +17,54 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Youtube Playlist Length Calculator",
-  description: "Calculate the total length, Average Length, total likes of a Youtube playlist",
+  title: "YouTube Playlist Length Calculator - Calculate Total Duration & Stats",
+  description: "Free YouTube playlist length calculator tool. Instantly calculate total duration, average video length, and playlist statistics. Get accurate time estimates for YouTube playlists.",
+  keywords: "YouTube playlist calculator, playlist duration, YouTube playlist length, video duration calculator, playlist statistics, YouTube tools",
+  authors: [{ name: "Naman Saini" }],
+  creator: "Naman Saini",
+  publisher: "YouTube Playlist Calculator",
+  metadataBase: new URL(process.env.WEBSITE_LINK || 'https://youtube-playlist-duration.vercel.app'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: "YouTube Playlist Length Calculator - Calculate Total Duration & Stats",
+    description: "Free YouTube playlist length calculator tool. Instantly calculate total duration, average video length, and playlist statistics.",
+    url: '/',
+    siteName: 'YouTube Playlist Calculator',
+    type: 'website',
+    locale: 'en_US',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'YouTube Playlist Length Calculator',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "YouTube Playlist Length Calculator - Calculate Total Duration & Stats",
+    description: "Free YouTube playlist length calculator tool. Instantly calculate total duration, average video length, and playlist statistics.",
+    images: ['/og-image.jpg'],
+    creator: '@NamanS4ini',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "",
   },
+  category: 'technology',
 };
 
 

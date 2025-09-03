@@ -5,8 +5,31 @@ import React from "react";
 
 
 export const metadata: Metadata = {
-  title: "About - Youtube Playlist Length Calculator",
-  description: "Learn about the features and privacy of the Youtube Playlist Length Calculator",
+  title: "About - YouTube Playlist Length Calculator",
+  description: "Discover powerful playlist management features: sort by duration, views, likes, calculate watch times at different speeds, and get detailed playlist statistics - all while keeping your privacy first.",
+  keywords: ["YouTube playlist", "playlist length", "video duration", "playlist calculator", "YouTube tools", "playlist analytics"],
+  openGraph: {
+    title: "About - YouTube Playlist Length Calculator",
+    description: "Take control of your YouTube playlists with advanced sorting, speed calculations, and detailed analytics.",
+    type: "website",
+    images: [
+      {
+        url: "/og-about.png",
+        width: 1200,
+        height: 630,
+        alt: "YouTube Playlist Length Calculator - About Page",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About - YouTube Playlist Length Calculator",
+    description: "Discover powerful playlist management features and take control of your YouTube experience.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 export default function AboutPage() {
   return (
