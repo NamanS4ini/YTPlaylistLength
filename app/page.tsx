@@ -102,9 +102,9 @@ export default function Component() {
       <h1 className="text-4xl font-bold text-center mb-2">
         YouTube Playlist Analyzer
       </h1>
-      <p className="text-zinc-400 text-center max-w-xl mb-10">
+      <h2 className="text-zinc-400 text-center max-w-xl mb-10">
         Instantly calculate total duration, likes, views, and more. Get insights before you even press play.
-      </p>
+      </h2>
 
       {/* URL Input */}
       <div className="w-full max-w-2xl flex flex-col gap-6">
