@@ -128,10 +128,11 @@ export default function PlaylistDetails() {
     }
 
     fetch(`/api/details?id=${id}&start=${start}&end=${end}`)
-      .then((res) => {
+      .then(async (res) => {
         if (!res.ok) {
+          const err = await res.json().catch(() => null);
           setError(res.status);
-          setErrorMsg(res.statusText);
+          setErrorMsg(err?.message || "Something went wrong");
           return null;
         }
         return res.json();
