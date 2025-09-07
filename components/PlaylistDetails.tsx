@@ -67,22 +67,22 @@ export default function PlaylistDetails() {
   }
 
   function handelSort(e: React.ChangeEvent<HTMLSelectElement>) {
-    if (e.target.value === "position") {
-      setVideoData(videoData ? [...videoData].sort((a, b) => a.position - b.position) : null)
-    } else if (e.target.value === "title") {
-      setVideoData(videoData ? [...videoData].sort((a, b) => a.title.localeCompare(b.title)) : null)
-    } else if (e.target.value === "newest") {
-      setVideoData(videoData ? [...videoData].sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()) : null)
-    } else if (e.target.value === "oldest") {
-      setVideoData(videoData ? [...videoData].sort((a, b) => new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime()) : null)
-    } else if (e.target.value === "views") {
-      setVideoData(videoData ? [...videoData].sort((a, b) => (b.views || 0) - (a.views || 0)) : null)
-    } else if (e.target.value === "likes") {
-      setVideoData(videoData ? [...videoData].sort((a, b) => (b.likes || 0) - (a.likes || 0)) : null)
-    } else if (e.target.value === "comments") {
-      setVideoData(videoData ? [...videoData].sort((a, b) => (b.comments || 0) - (a.comments || 0)) : null)
-    } else if (e.target.value === "duration") {
-      setVideoData((videoData ? [...videoData].sort((a, b) => Number(b.duration || 0) - Number(a.duration || 0)) : null))
+    if (!videoData) return;
+    
+    const sortFunctions: Record<string, (a: VideoData, b: VideoData) => number> = {
+      position: (a, b) => a.position - b.position,
+      title: (a, b) => a.title.localeCompare(b.title),
+      newest: (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+      oldest: (a, b) => new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime(),
+      views: (a, b) => (b.views || 0) - (a.views || 0),
+      likes: (a, b) => (b.likes || 0) - (a.likes || 0),
+      comments: (a, b) => (b.comments || 0) - (a.comments || 0),
+      duration: (a, b) => Number(b.duration || 0) - Number(a.duration || 0)
+    };
+
+    const sortFunction = sortFunctions[e.target.value];
+    if (sortFunction) {
+      setVideoData([...videoData].sort(sortFunction));
     }
   }
 
@@ -151,6 +151,9 @@ export default function PlaylistDetails() {
     setIsBookmarked(isBookmarked);
 
   }, []);
+  useEffect(() => {
+    console.log(videoData?.length);
+  }, [videoData])
 
   if (videoData === null && error === null) {
     return (
@@ -288,7 +291,7 @@ export default function PlaylistDetails() {
           </div>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-5 max-w-6xl w-full mx-auto'>
             {videoData.map((item, index) => (
-              <div key={item.id} className='bg-zinc-900 border flex flex-col justify-between border-zinc-800 hover:bg-zinc-800 ease-in-out duration-200 transition rounded-lg p-4 shadow-lg'>
+              <div key={`${item.id}${item.position}`} className='bg-zinc-900 border flex flex-col justify-between border-zinc-800 hover:bg-zinc-800 ease-in-out duration-200 transition rounded-lg p-4 shadow-lg'>
                 <a href={`https://www.youtube.com/watch?v=${item.id}&list=${playlistData?.id}`} target='_blank' rel="noopener noreferrer">
                   <div className='text-zinc-400 flex justify-between mb-2'>
                     <span>
