@@ -37,7 +37,7 @@ type PlayListData = {
 
 export default function PlaylistDetails() {
 
-    const params = useParams()
+  const params = useParams()
   const id = params.url as string
   const searchParams = useSearchParams();
 
@@ -46,7 +46,8 @@ export default function PlaylistDetails() {
 
   const [videoData, setVideoData] = useState<VideoData[] | null>(null);
   const [playlistData, setPlaylistData] = useState<PlayListData | null>(null);
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<number | null>(null)
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [thumbnail, setThumbnail] = useState<boolean>(false)
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
   const [speed, setSpeed] = useState<string>("1")
@@ -68,7 +69,7 @@ export default function PlaylistDetails() {
 
   function handelSort(e: React.ChangeEvent<HTMLSelectElement>) {
     if (!videoData) return;
-    
+
     const sortFunctions: Record<string, (a: VideoData, b: VideoData) => number> = {
       position: (a, b) => a.position - b.position,
       title: (a, b) => a.title.localeCompare(b.title),
@@ -121,31 +122,17 @@ export default function PlaylistDetails() {
   useEffect(() => {
 
     if (parseInt(start) > parseInt(end)) {
-      setError("Start Can not be greater than End")
+      setError(400)
+      setErrorMsg("Start greater than end")
       return
     }
 
     fetch(`/api/details?id=${id}&start=${start}&end=${end}`)
       .then((res) => {
         if (!res.ok) {
-          setError(res.statusText)
-          if (res.status === 400) {
-            setError("Playlist not found")
-            return null;
-          }
-          else if (res.status === 500) {
-            setError("Internal Server Error")
-            return null;
-          }
-          else if (res.status === 403) {
-            setError("Origin is not allowed");
-            return null;
-          }
-          else {
-            setError("An unexpected error occurred");
-            return null;
-          }
-
+          setError(res.status);
+          setErrorMsg(res.statusText);
+          return null;
         }
         return res.json();
       })
@@ -158,7 +145,7 @@ export default function PlaylistDetails() {
         setError(err.message);
       });
 
-      // check if current playlist is bookmarked
+    // check if current playlist is bookmarked
     setThumbnail(JSON.parse(localStorage.getItem("thumbnail") || "false"))
     const savedPlaylists = JSON.parse(localStorage.getItem('bookmarks') || '[]');
     const isBookmarked = savedPlaylists.some((playlist: { id: string }) => playlist.id === id);
@@ -182,21 +169,21 @@ export default function PlaylistDetails() {
         <h1 className="text-3xl font-bold mb-2">Something went wrong!</h1>
 
         <p className="text-zinc-400 mb-4 max-w-md">
-          {error === "Playlist not found" ? 
-            "The playlist you're trying to access is either private, unavailable, or doesn't exist." :
-            error === "Start Can not be greater than End" ?
-            "Invalid range: Start position cannot be greater than end position." :
-            "There was an error loading the playlist. This could be due to network issues or invalid parameters."
+          {error === 404 ?
+            "The playlist could not be found. It may be private, deleted, or the URL might be incorrect." :
+            error === 400 ?
+              "Please confirm that the playlist ID and range parameters are correct and valid." :
+              "Unable to load the playlist data. This might be caused by connectivity issues or incorrect request parameters."
           }
         </p>
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 mb-6 min-w-60 max-w-md">
-          <p className="text-sm text-zinc-500 mb-2">Error Details:</p>
-          <code className="text-red-400 text-sm break-words">{error}</code>
+          <p className="text-sm text-zinc-500 font-bold mb-2">Error Details:</p>
+          <code className="text-red-400 text-sm font-bold break-words">{error}: {errorMsg}</code>
         </div>
 
         <p className="text-sm text-zinc-400 mb-6 max-w-md">
-          {error === "Playlist not found" ?
+          {error === 404 ?
             "Double-check the link and make sure it's a valid public playlist." :
             "Please try again or check your input parameters."
           }
@@ -204,12 +191,12 @@ export default function PlaylistDetails() {
 
         <div className="flex gap-3 flex-col sm:flex-row">
           <Button color={"green"}
-            className='cursor-pointer' 
+            className='cursor-pointer'
             onClick={() => window.location.reload()}
           >
             Reload Page
           </Button>
-          
+
           <Link href="/">
             <Button color={"dark"} className='cursor-pointer'>Back to Home</Button>
           </Link>
