@@ -129,20 +129,34 @@ export default function PlaylistDetails() {
       .then((res) => {
         if (!res.ok) {
           setError(res.statusText)
-          if (res.status === 404) {
+          if (res.status === 400) {
             setError("Playlist not found")
             return null;
           }
-          setError("Invalid Playlist ID")
-          return null;
+          else if (res.status === 500) {
+            setError("Internal Server Error")
+            return null;
+          }
+          else if (res.status === 403) {
+            setError("Origin is not allowed");
+            return null;
+          }
+          else {
+            setError("An unexpected error occurred");
+            return null;
+          }
+
         }
         return res.json();
       })
       .then((data) => {
+        if (!data) return;
         setVideoData(data.videoData);
         setPlaylistData(data.playlistData);
       })
-      .catch((error) => console.error(error.message));
+      .catch((err) => {
+        setError(err.message);
+      });
 
       // check if current playlist is bookmarked
     setThumbnail(JSON.parse(localStorage.getItem("thumbnail") || "false"))
@@ -151,9 +165,6 @@ export default function PlaylistDetails() {
     setIsBookmarked(isBookmarked);
 
   }, []);
-  useEffect(() => {
-    console.log(videoData?.length);
-  }, [videoData])
 
   if (videoData === null && error === null) {
     return (
@@ -168,19 +179,41 @@ export default function PlaylistDetails() {
       <main className="min-h-dvh md:min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center px-6 text-center">
         <FaExclamationTriangle className="text-yellow-500 text-5xl mb-6" />
 
-        <h1 className="text-3xl font-bold mb-2">Invalid Playlist ID or Range</h1>
+        <h1 className="text-3xl font-bold mb-2">Something went wrong!</h1>
 
         <p className="text-zinc-400 mb-4 max-w-md">
-          The playlist you&apos;re trying to access is either <span className="text-white font-medium">private</span>, <span className="text-white font-medium">unavailable</span>, or <span className="text-white font-medium">doesn&apos;t exist</span>.
+          {error === "Playlist not found" ? 
+            "The playlist you're trying to access is either private, unavailable, or doesn't exist." :
+            error === "Start Can not be greater than End" ?
+            "Invalid range: Start position cannot be greater than end position." :
+            "There was an error loading the playlist. This could be due to network issues or invalid parameters."
+          }
         </p>
+
+        <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 mb-6 min-w-60 max-w-md">
+          <p className="text-sm text-zinc-500 mb-2">Error Details:</p>
+          <code className="text-red-400 text-sm break-words">{error}</code>
+        </div>
 
         <p className="text-sm text-zinc-400 mb-6 max-w-md">
-          Double-check the link and make sure it&apos;s a valid public playlist. If the problem persists, try another one or <Link className='text-blue-400 hover:underline' href="https://github.com/NamanS4ini/YTPlaylistLength/issues">Contact Me</Link>.
+          {error === "Playlist not found" ?
+            "Double-check the link and make sure it's a valid public playlist." :
+            "Please try again or check your input parameters."
+          }
         </p>
 
-        <Link href="/">
-          <Button className='cursor-pointer'>Back to Home</Button>
-        </Link>
+        <div className="flex gap-3 flex-col sm:flex-row">
+          <Button color={"green"}
+            className='cursor-pointer' 
+            onClick={() => window.location.reload()}
+          >
+            Reload Page
+          </Button>
+          
+          <Link href="/">
+            <Button color={"dark"} className='cursor-pointer'>Back to Home</Button>
+          </Link>
+        </div>
       </main>
     )
   }
