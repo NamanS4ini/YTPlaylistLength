@@ -33,7 +33,7 @@ export default function Component() {
       const videoId = url.split("list=")[1]?.split("&")[0];
       const updatedStart: string = start === "" ? "0" : start;
       const updatedEnd: string = end === "" ? "500" : end;
-      router.push(`/${videoId}?start=${updatedStart}&end=${updatedEnd}`);
+      router.push(`/details/${videoId}?start=${updatedStart}&end=${updatedEnd}`);
     } else {
       toast.warn('Invalid URL. Please recheck your URL', {
         position: "top-right",
