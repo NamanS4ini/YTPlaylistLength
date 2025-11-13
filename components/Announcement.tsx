@@ -6,7 +6,7 @@ import { IoClose } from "react-icons/io5";
 const Announcement = () => {
     // Edit this object to change the announcement
     const announcement = {
-        id: "announcement-5", // Change this ID when you want to show the announcement again
+        id: "announcement-1", // Change this ID when you want to show the announcement again
         message: `Replace youtube.com with youtube-playlist-duration.vercel.app in any playlist URL for instant analysis`, // Your announcement message
         enabled: true, // Set to true to show the announcement
     };
