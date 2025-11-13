@@ -91,11 +91,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased text-white bg-zinc-900`}
       >
-        <Announcement />
         <Navbar />
         {children}
         <Analytics />
         <SpeedInsights />
+        <Announcement />
       </body>
     </html>
   );
