@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 
-export default function DetailsUrlPage({ params }: { params: { url: string } }) {
-  redirect(`/${params.url}`)
+export default async function DetailsUrlPage({ params }: { params: Promise<{ url: string }> }) {
+  const { url } = await params
+  redirect(`/${url}`)
 }
