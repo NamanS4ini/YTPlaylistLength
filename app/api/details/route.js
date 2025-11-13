@@ -28,10 +28,16 @@ export async function GET(request) {
   const origin = request.headers.get("origin");
   const referer = request.headers.get("referer");
 
-  const allowedOrigins = [process.env.WEBSITE_LINK];
+  // Parse WEBSITE_LINK as comma-separated array of allowed domains
+  const allowedOrigins = process.env.WEBSITE_LINK 
+    ? process.env.WEBSITE_LINK.split(',').map(domain => domain.trim())
+    : [];
 
-  // allow null origin *only if* the referer is my website
-  if (origin === null && referer?.startsWith(process.env.WEBSITE_LINK)) {
+  // Check if null origin with valid referer from any allowed domain
+  const isValidReferer = allowedOrigins.some(domain => referer?.startsWith(domain));
+  
+  if (origin === null && isValidReferer) {
+    // Allow null origin if referer matches any allowed domain
   } else if (!allowedOrigins.includes(origin)) {
     console.log("Blocked origin:", origin);
     console.log("Blocked referer:", referer);

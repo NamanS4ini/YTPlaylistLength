@@ -66,7 +66,7 @@ export default function SavedPlaylist() {
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-5 max-w-6xl w-full mx-auto'>
           {bookmarks?.map((playlist) => (
             <div key={playlist.id} className='bg-zinc-900 border flex flex-col justify-between border-zinc-800 hover:bg-zinc-800 ease-in-out duration-200 transition rounded-lg p-4 shadow-lg'>
-              <Link href={`/details/${playlist.id}`} rel="noopener noreferrer">
+              <Link href={`/${playlist.id}`} rel="noopener noreferrer">
                 <div className='relative mb-2'>
                   {thumbnail && <Image
                     src={playlist.thumbnail}

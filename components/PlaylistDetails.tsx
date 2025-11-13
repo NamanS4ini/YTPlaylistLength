@@ -11,7 +11,6 @@ import { CiBookmark } from "react-icons/ci";
 import { PropagateLoader } from 'react-spinners';
 
 
-
 //Type for videoData received from backend
 type VideoData = {
   id: string;
@@ -38,8 +37,19 @@ type PlayListData = {
 export default function PlaylistDetails() {
 
   const params = useParams()
-  const id = params.url as string
   const searchParams = useSearchParams();
+  
+  let id = params.url as string
+  console.log(id);
+  
+  // Check if playlist ID is in query parameters first
+  const listParam = searchParams.get('list');
+  if (listParam) {
+    id = listParam;
+  } else if (id.includes('list%3D')) { // %3D means '='
+    // Clean the URL by removing playlist identifiers
+    id = id.split('list%3D')[1];
+  }
 
   const start = searchParams.get('start') || "0";
   const end = searchParams.get('end') || "500";

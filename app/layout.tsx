@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
 import Navbar from "@/components/navbar";
+import Announcement from "@/components/Announcement";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -90,6 +91,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased text-white bg-zinc-900`}
       >
+        <Announcement />
         <Navbar />
         {children}
         <Analytics />
