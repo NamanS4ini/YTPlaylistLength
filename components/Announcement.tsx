@@ -14,7 +14,7 @@ const Announcement = () => {
         // Add more announcements here
         {
             id: 2,
-            message: `The website has moved to <a class="text-blue-400 underline hover:text-blue-300" href="https://ytpla.in">ytpla.in</a>. Please transfer your saved playlists by December 1st, 2025.`,
+            message: `The website has moved to <a class="text-blue-400 underline hover:text-blue-300" href="https://ytpla.in">ytpla.in</a>. Please transfer your saved playlists by November 20th, 2025.`,
             enabled: true,
         },
     ];
