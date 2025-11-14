@@ -40,7 +40,6 @@ export default function PlaylistDetails() {
   const searchParams = useSearchParams();
   
   let id = params.url as string
-  console.log(id);
   
   // Check if playlist ID is in query parameters first
   const listParam = searchParams.get('list');
