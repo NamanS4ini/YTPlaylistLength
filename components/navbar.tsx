@@ -8,7 +8,7 @@ export default function Component() {
   return (
     <Navbar fluid rounded className="bg-zinc-900 fixed w-full z-50 text-white dark:bg-zinc-900 dark:text-white">
       <Link href="/">
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">YT Playlist Length</span>
+        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">YT Playlist Analyzer</span>
       </Link>
       <div className="flex justify-center items-center md:order-2">
         <Link className="mx-6" target="_blank" href="https://github.com/NamanS4ini/YTPlaylistLength">

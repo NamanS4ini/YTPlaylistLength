@@ -32,7 +32,7 @@ export default function Component() {
       setValidated(true);
       const videoId = url.split("list=")[1]?.split("&")[0];
       const updatedStart: string = start === "" ? "0" : start;
-      const updatedEnd: string = end === "" ? "500" : end;
+      const updatedEnd: string = end === "" ? "5000" : end;
       router.push(`/${videoId}?start=${updatedStart}&end=${updatedEnd}`);
     } else {
       toast.warn('Invalid URL. Please recheck your URL', {
@@ -54,8 +54,8 @@ export default function Component() {
       setStart("0");
       return;
     }
-    if (Number(e.target.value) >= 500) {
-      setStart("500");
+    if (Number(e.target.value) >= 5000) {
+      setStart("5000");
       return;
     }
     setStart(e.target.value)
@@ -70,8 +70,8 @@ export default function Component() {
       setEnd("0");
       return;
     }
-    if (Number(e.target.value) >= 500) {
-      setEnd("500");
+    if (Number(e.target.value) >= 5000) {
+      setEnd("5000");
       return;
     }
     setEnd(e.target.value)
@@ -80,6 +80,13 @@ export default function Component() {
   const [url, setURL] = useState("")
   const [start, setStart] = useState<string>("")
   const [end, setEnd] = useState<string>("")
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      validateURL(url);
+    }
+  }
+
   return (
     <main className="min-h-screen bg-zinc-950 text-white px-6 py-24 flex flex-col items-center">
       <ToastContainer
@@ -113,6 +120,7 @@ export default function Component() {
           label="Paste YouTube Playlist URL"
           value={url}
           onChange={(e) => setURL(e.target.value)}
+          onKeyUp ={handleKeyPress}
           className="w-full !bg-transparent cursor-text"
         />
 
@@ -127,6 +135,7 @@ export default function Component() {
               type="number"
               value={start}
               onChange={handelStart}
+              onKeyUp={handleKeyPress}
               placeholder="0"
               className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -141,7 +150,8 @@ export default function Component() {
               type="number"
               value={end}
               onChange={handelEnd}
-              placeholder="500"
+              onKeyUp={handleKeyPress}
+              placeholder="5000"
               className="w-full p-3 rounded-lg bg-zinc-800 text-white border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>

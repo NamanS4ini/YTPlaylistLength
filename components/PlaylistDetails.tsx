@@ -52,7 +52,7 @@ export default function PlaylistDetails() {
   }
 
   const start = searchParams.get('start') || "0";
-  const end = searchParams.get('end') || "500";
+  const end = searchParams.get('end') || "5000";
 
   const [videoData, setVideoData] = useState<VideoData[] | null>(null);
   const [playlistData, setPlaylistData] = useState<PlayListData | null>(null);

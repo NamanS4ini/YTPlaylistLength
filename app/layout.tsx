@@ -18,21 +18,21 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "YouTube Playlist Length Calculator - Calculate Total Duration & Stats",
-  description: "Free YouTube playlist length calculator tool. Instantly calculate total duration, average video length, and playlist statistics. Get accurate time estimates for YouTube playlists.",
-  keywords: "YouTube playlist calculator, playlist duration, YouTube playlist length, video duration calculator, playlist statistics, YouTube tools",
+  title: "YouTube Playlist Analyzer",
+  description: "Free YouTube playlist analyzer tool. Instantly calculate total duration, average video length, and playlist statistics. Get accurate time estimates for YouTube playlists.",
+  keywords: "YouTube playlist analyzer, playlist duration, YouTube playlist length, video duration analyzer, playlist statistics, YouTube tools",
   authors: [{ name: "Naman Saini" }],
   creator: "Naman Saini",
-  publisher: "YouTube Playlist Calculator",
-  metadataBase: new URL(process.env.WEBSITE_LINK || 'https://youtube-playlist-duration.vercel.app'),
+  publisher: "YouTube Playlist Analyzer",
+  metadataBase: new URL('https://ytpla.in'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: "YouTube Playlist Length Calculator - Calculate Total Duration & Stats",
-    description: "Free YouTube playlist length calculator tool. Instantly calculate total duration, average video length, and playlist statistics.",
+    title: "YouTube Playlist Analyzer",
+    description: "Free YouTube playlist analyzer tool. Instantly calculate total duration, average video length, and playlist statistics.",
     url: '/',
-    siteName: 'YouTube Playlist Calculator',
+    siteName: 'YouTube Playlist Analyzer',
     type: 'website',
     locale: 'en_US',
     images: [
@@ -40,14 +40,14 @@ export const metadata: Metadata = {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'YouTube Playlist Length Calculator',
+        alt: 'YouTube Playlist Analyzer',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: "YouTube Playlist Length Calculator - Calculate Total Duration & Stats",
-    description: "Free YouTube playlist length calculator tool. Instantly calculate total duration, average video length, and playlist statistics.",
+    title: "YouTube Playlist Analyzer",
+    description: "Free YouTube playlist analyzer tool. Instantly calculate total duration, average video length, and playlist statistics.",
     images: ['/og-image.jpg'],
     creator: '@NamanS4ini',
   },
