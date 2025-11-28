@@ -5,7 +5,7 @@ const errorMessages: Record<number, string> = {
   500: "Internal Server Error - Please try again later.",
 };
 
-export function validateOrigin(req: Request) {
+function validateOrigin(req: Request) {
 const origin = req.headers.get("origin");
 const referer = req.headers.get("referer");
 
@@ -79,8 +79,16 @@ export async function GET(req: Request) {
   }
   
   // Extract video IDs
+  interface PlaylistItem {
+    snippet: {
+      resourceId: {
+        videoId: string;
+      };
+    };
+  }
+  
   const videoIds = playlistData.items
-    .map((item: any) => item.snippet.resourceId.videoId)
+    .map((item: PlaylistItem) => item.snippet.resourceId.videoId)
     .filter(Boolean);
 
   // Fetch video durations in batches (max 50 per request)
@@ -94,8 +102,14 @@ export async function GET(req: Request) {
     );
     
     if (videoRes.ok) {
+      interface VideoItem {
+        contentDetails: {
+          duration: string;
+        };
+      }
+      
       const videoData = await videoRes.json();
-      videoData.items.forEach((video: any) => {
+      videoData.items.forEach((video: VideoItem) => {
         const duration = video.contentDetails.duration;
         totalSeconds += parseDuration(duration);
       });
