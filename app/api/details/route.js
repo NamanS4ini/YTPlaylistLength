@@ -7,12 +7,15 @@ const errorMessages = {
   500: "Internal Server Error - Please try again later.",
 };
 
+// Helper function to parse ISO 8601 duration format
 function convertToSeconds(duration) {
   if (!duration) return null;
 
   const match = duration.match(
     /P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/
   );
+
+  if (!match) return null;
 
   const days = parseInt(match[1] || 0);
   const hours = parseInt(match[2] || 0);
@@ -22,9 +25,8 @@ function convertToSeconds(duration) {
   return days * 86400 + hours * 3600 + minutes * 60 + seconds;
 }
 
-export async function GET(request) {
-  // SECURITY CHECKS
-
+// Helper function to validate origin
+function validateOrigin(request) {
   const origin = request.headers.get("origin");
   const referer = request.headers.get("referer");
 
@@ -37,31 +39,39 @@ export async function GET(request) {
   const isValidReferer = allowedOrigins.some(domain => referer?.startsWith(domain));
   
   if (origin === null && isValidReferer) {
-    // Allow null origin if referer matches any allowed domain
-  } else if (!allowedOrigins.includes(origin)) {
-    console.log("Blocked origin:", origin);
-    console.log("Blocked referer:", referer);
+    return true;
+  }
+  
+  if (allowedOrigins.includes(origin)) {
+    return true;
+  }
+
+  return false;
+}
+
+export async function GET(request) {
+  // Validate origin
+  if (!validateOrigin(request)) {
     return Response.json(
       {
         status: 403,
-        message: errorMessages[403] || "Unexpected error",
+        message: errorMessages[403] || "Forbidden",
       },
       { status: 403 }
     );
   }
 
-  // API LOGIC
-
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
-  const start = searchParams.get("start");
-  const end = searchParams.get("end");
+  const start = parseInt(searchParams.get("start")) || 1;
+  const end = parseInt(searchParams.get("end"));
   const apiKey = process.env.API_KEY;
-  // fetching the playlist data from youtube api
+
+  // Fetch initial playlist items
   const res = await fetch(
     `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${id}&maxResults=50&key=${apiKey}`
   );
-  //   if the playlist data is not found then return the error message
+
   if (!res.ok) {
     return Response.json(
       {
@@ -71,10 +81,11 @@ export async function GET(request) {
       { status: res.status }
     );
   }
-  //   if the playlist data is found then see if there is a next page token and fetch the next page data (yt by default returns 50 items)
-  //   if there is a next page token then fetch the next page data and push it to the playlist data
+
+  // Fetch all playlist items (handle pagination)
   const playlistData = await res.json();
   let nextPageToken = playlistData.nextPageToken;
+  
   while (nextPageToken) {
     const res2 = await fetch(
       `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${id}&maxResults=50&pageToken=${nextPageToken}&key=${apiKey}`
@@ -83,7 +94,8 @@ export async function GET(request) {
     playlistData.items.push(...playlistData2.items);
     nextPageToken = playlistData2.nextPageToken || null;
   }
-  //   remove the unnecessary data from the playlist data and get the data in the required format
+
+  // Extract and format basic video data
   const items = playlistData.items.map((item) => {
     return {
       id: item.snippet?.resourceId?.videoId || null,
@@ -97,7 +109,6 @@ export async function GET(request) {
       channelTitle: item.snippet?.videoOwnerChannelTitle || "Unknown Channel",
       channelId: item.snippet?.videoOwnerChannelId || null,
       publishedAt: item.snippet?.publishedAt || null,
-      //   ?? instead of || to avoid getting null for the position if it is 0
       position: item.snippet?.position ?? null,
       duration: null,
       likes: null,
@@ -106,134 +117,110 @@ export async function GET(request) {
     };
   });
 
-  let count = 0;
-  let videoIds = new Array(Math.ceil(items.length / 50));
-  for (let i = 0; i < videoIds.length; i++) {
-    videoIds[i] = new Array(50);
+  // Prepare video IDs in batches of 50
+  const videoIds = items.map(item => item.id).filter(Boolean);
+  const batchSize = 50;
+  const batches = [];
+  
+  for (let i = 0; i < videoIds.length; i += batchSize) {
+    batches.push(videoIds.slice(i, i + batchSize).join(","));
   }
 
-  while (count < Math.ceil(items.length / 50)) {
-    for (let i = 0; i < 50; i++) {
-      if (items[count * 50 + i]) {
-        videoIds[count][i] = items[count * 50 + i].id;
-      } else {
-        videoIds[count][i] = null;
-      }
-    }
-    count++;
-  }
-  // remove the null values from the array of arrays
-  videoIds = videoIds.map((arr) => arr.filter((item) => item !== null));
-
-  videoIds = videoIds.map((arr) => arr.join(","));
-
-  // fetch the duration of each video using the youtube api and the video ids
-  //   the api call will return an array of objects with the id and duration of each video
+  // Fetch video details (duration and statistics) in parallel
   const details = await Promise.all(
-    videoIds.map(async (ids) => {
-      const res = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${ids}&key=${apiKey}`
-      );
-      const data = await res.json();
-      const stats = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${ids}&key=${apiKey}`
-      );
-      const statsData = await stats.json();
+    batches.map(async (ids) => {
+      const [contentRes, statsRes] = await Promise.all([
+        fetch(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${ids}&key=${apiKey}`),
+        fetch(`https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${ids}&key=${apiKey}`)
+      ]);
 
-      return data.items.map((item) => {
-        //   get the likes, views and comments from the stats data
-        const statsItem = statsData.items.find(
-          (statsItem) => statsItem.id === item.id
-        );
-        const likes = statsItem?.statistics?.likeCount || null;
-        const views = statsItem?.statistics?.viewCount || null;
-        const comments = statsItem?.statistics?.commentCount || null;
-        //   get the duration from the contentDetails data
+      const contentData = await contentRes.json();
+      const statsData = await statsRes.json();
+
+      return contentData.items.map((item) => {
+        const statsItem = statsData.items.find((s) => s.id === item.id);
         const duration = item.contentDetails?.duration || null;
         const seconds = convertToSeconds(duration);
+        
         return {
           id: item.id,
           duration: seconds,
-          likes: likes,
-          views: views,
-          comments: comments,
+          likes: statsItem?.statistics?.likeCount || null,
+          views: statsItem?.statistics?.viewCount || null,
+          comments: statsItem?.statistics?.commentCount || null,
         };
       });
     })
   );
 
-  //   flatten the array of arrays into a single array
-  const flattenedItems = details.flat();
+  // Flatten the array of arrays
+  const flattenedDetails = details.flat();
 
-  //   loop through the items and add the duration to the items array using the id as the key
-
+  // Merge video details with basic data
   let updatedItems = items.map((item) => {
-    const detailItem = flattenedItems.find(
-      (detailItem) => detailItem.id === item.id
-    );
+    const detailItem = flattenedDetails.find((d) => d.id === item.id);
     if (detailItem) {
       return {
         ...item,
         duration: detailItem.duration,
-        likes: parseInt(detailItem.likes),
-        views: parseInt(detailItem.views),
-        comments: parseInt(detailItem.comments),
-      };
-    } else {
-      return {
-        ...item,
-        duration: null,
-        likes: null,
-        views: null,
-        comments: null,
+        likes: parseInt(detailItem.likes) || null,
+        views: parseInt(detailItem.views) || null,
+        comments: parseInt(detailItem.comments) || null,
       };
     }
+    return item;
   });
 
-  // filter out the items that are null
+  // Filter out videos without duration and apply range
   updatedItems = updatedItems.filter((item) => item.duration !== null);
+  
+  if (end) {
+    updatedItems = updatedItems.filter(
+      (item, index) => index >= start - 1 && index <= end - 1
+    );
+  } else if (start > 1) {
+    updatedItems = updatedItems.filter((item, index) => index >= start - 1);
+  }
 
-  updatedItems = updatedItems.filter(
-    (item, index) => index >= start - 1 && index <= end - 1
+  // Fetch playlist details
+  const playlistRes = await fetch(
+    `https://www.googleapis.com/youtube/v3/playlists?key=${apiKey}&id=${id}&part=snippet&fields=items(id,snippet(title,channelId,channelTitle,thumbnails))`
   );
-
-  let playlistDetails = await fetch(
-    `https://www.googleapis.com/youtube/v3/playlists?key=${apiKey}&id=${id}&part=id,snippet&fields=items(id,snippet(title,channelId,channelTitle,thumbnails(maxres)))`
-  );
-  playlistDetails = await playlistDetails.json();
-  playlistDetails = playlistDetails.items?.[0]
-    ? {
-        id: playlistDetails.items[0].id,
-        title: playlistDetails.items[0].snippet?.title,
-        channelId: playlistDetails.items[0].snippet?.channelId,
-        channelTitle: playlistDetails.items[0].snippet?.channelTitle,
+  
+  let playlistDetails = null;
+  if (playlistRes.ok) {
+    const playlistInfo = await playlistRes.json();
+    const playlistItem = playlistInfo.items?.[0];
+    
+    if (playlistItem) {
+      playlistDetails = {
+        id: playlistItem.id,
+        title: playlistItem.snippet?.title || "Unknown Playlist",
+        channelId: playlistItem.snippet?.channelId || null,
+        channelTitle: playlistItem.snippet?.channelTitle || "Unknown Channel",
         thumbnail:
-          playlistDetails.items[0].snippet?.thumbnails?.maxres?.url ||
-          playlistDetails.items[0].snippet?.thumbnails?.high?.url ||
-          playlistDetails.items[0].snippet?.thumbnails?.medium?.url ||
-          playlistDetails.items[0].snippet?.thumbnails?.default?.url ||
+          playlistItem.snippet?.thumbnails?.maxres?.url ||
+          playlistItem.snippet?.thumbnails?.high?.url ||
+          playlistItem.snippet?.thumbnails?.medium?.url ||
+          playlistItem.snippet?.thumbnails?.default?.url ||
           null,
-      }
-    : null;
+      };
+    }
+  }
 
-  updatedItems = {
-    playlistData: playlistDetails || null,
-    videoData: updatedItems,
-  };
-
-  return Response.json(updatedItems, {
-    status: 200,
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": origin, // Set the CORS headers again here
+  const origin = request.headers.get("origin");
+  
+  return Response.json(
+    {
+      playlistData: playlistDetails,
+      videoData: updatedItems,
     },
-  });
+    {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": origin || "*",
+      },
+    }
+  );
 }
-
-// FOR FUTURE ME OR WHOEVER IS READING THIS:
-
-// Wanna Add who's playlist it is?
-
-// https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=${id}&key=${API_KEY}
-
-// This returns the playlist owner'S data feel free to incorporate that into the response if you want to.
