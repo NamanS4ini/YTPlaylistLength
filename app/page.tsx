@@ -200,7 +200,7 @@ export default function Component() {
 
         <div>
           <h3 className="font-medium text-white mb-1"><span className="text-blue-400">Q:</span> Is it mobile-friendly?</h3>
-          <p><span className="text-green-400">A:</span> Absolutely, everything's responsive and optimized for both desktops and phones.</p>
+          <p><span className="text-green-400">A:</span> Absolutely, everything&apos;s responsive and optimized for both desktops and phones.</p>
         </div>
 
         <div>
@@ -208,7 +208,7 @@ export default function Component() {
           <p>
             <span className="text-green-400">A:</span> Yep! While viewing a playlist, just press{" "}
             <CiBookmark size={20} className="inline text-current" />
-            and it'll be saved for quick access later.
+            and it&apos;ll be saved for quick access later.
             <span className="block mt-1 text-zinc-400 text-sm">
               All saved playlists stay only on <span className="text-white font-semibold">your device</span>,
               nothing is uploaded or stored on our servers.

@@ -16,6 +16,11 @@ const Announcement = () => {
             message: `The website has moved to <a class="text-blue-400 underline hover:text-blue-300" href="https://ytpla.in">ytpla.in</a>. Please transfer your saved playlists by November 20th, 2025.`,
             enabled: false,
         },
+        {
+            id: 3,
+            message: `Help me improve YT Playlist Analyzer by taking a quick <a class="text-blue-400 underline hover:text-blue-300" href="https://forms.gle/vH7u4LEx9ou8Q7GRA" target="_blank" rel="noopener noreferrer">user survey</a>. Your feedback matters!`,
+            enabled: true,
+        },
     ];
 
     const [dismissedIds, setDismissedIds] = useState<number[]>([]);

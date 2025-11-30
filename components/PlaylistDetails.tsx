@@ -161,7 +161,7 @@ export default function PlaylistDetails() {
     const isBookmarked = savedPlaylists.some((playlist: { id: string }) => playlist.id === id);
     setIsBookmarked(isBookmarked);
 
-  }, []);
+  }, [id, start, end]);
 
   if (videoData === null && error === null) {
     return (

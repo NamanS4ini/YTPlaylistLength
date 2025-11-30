@@ -2,6 +2,7 @@
 import {Navbar, NavbarCollapse, NavbarToggle } from "flowbite-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Component() {
   const pathname = usePathname();
@@ -12,7 +13,7 @@ export default function Component() {
       </Link>
       <div className="flex justify-center items-center md:order-2">
         <Link className="mx-6" target="_blank" href="https://github.com/NamanS4ini/YTPlaylistLength">
-      <img className="h-8 w-8 invert" src="/github.svg" alt="" />
+      <Image className="h-8 w-8 invert" src="/github.svg" alt="" width={32} height={32} />
         </Link>
         <NavbarToggle />
       </div>
