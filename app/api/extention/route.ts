@@ -10,7 +10,7 @@ const origin = req.headers.get("origin");
 const referer = req.headers.get("referer");
 
 const allowedOrigins = [
-process.env.WEBSITE_LINK,         // your main site
+process.env.WEBSITE_LINK,         // main site
 "chrome-extension://",            // chrome extension
 "moz-extension://",               // firefox extension
 null                              // content scripts

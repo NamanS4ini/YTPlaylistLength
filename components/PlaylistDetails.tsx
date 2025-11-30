@@ -96,7 +96,7 @@ export default function PlaylistDetails() {
     }
   }
 
-  // Handle bookmark logic here
+  // Handle bookmark
   function handleBookmark() {
     const savedPlaylists = JSON.parse(localStorage.getItem('bookmarks') || '[]');
     const isBookmarked = savedPlaylists.some((playlist: { id: string }) => playlist.id === id);
