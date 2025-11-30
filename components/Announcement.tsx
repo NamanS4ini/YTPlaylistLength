@@ -17,8 +17,8 @@ const Announcement = () => {
             enabled: false,
         },
         {
-            id: 3,
-            message: `Help me improve YT Playlist Analyzer by taking a quick <a class="text-blue-400 underline hover:text-blue-300" href="https://forms.gle/vH7u4LEx9ou8Q7GRA" target="_blank" rel="noopener noreferrer">user survey</a>. Your feedback matters!`,
+            id: 4,
+            message: `Help me improve YT Playlist Analyzer by taking a quick <a class="text-blue-400 underline hover:text-blue-300" href="https://ytpla.in/feedback" target="_blank" rel="noopener noreferrer">user survey</a>. Your feedback matters!`,
             enabled: true,
         },
     ];

@@ -25,6 +25,9 @@ export default function Component() {
           Saved
         </Link>
         <Link href="/about" className={`${pathname === "/about" ? "text-zinc-50 m-2" : "text-zinc-400 m-2"}`} >About</Link>
+        <Link href="/feedback" className={`${pathname === "/feedback" ? "text-zinc-50 m-2" : "text-zinc-400 m-2"}`}>
+          Feedback
+        </Link>
       </NavbarCollapse>
     </Navbar>
   );
