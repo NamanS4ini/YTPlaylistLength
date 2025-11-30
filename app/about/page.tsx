@@ -43,7 +43,7 @@ export default function AboutPage() {
         </header>
 
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">⚡ Sort with Power</h2>
+          <h2 className="text-2xl font-semibold text-white">Sort with Power</h2>
           <p className="text-gray-300">
             Sort any playlist your way, by <span className="font-medium text-white">length, views, likes, or comments</span>.
             No more endless scrolling to find that one perfect video.
@@ -51,7 +51,7 @@ export default function AboutPage() {
         </section>
 
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">⏱ Smarter Watch Time</h2>
+          <h2 className="text-2xl font-semibold text-white">Smarter Watch Time</h2>
           <p className="text-gray-300">
             Wondering how long a playlist takes at <span className="font-medium text-white">1.25x, 1.5x, or 2x speed</span>?
             Get real-time calculations instantly.
@@ -59,7 +59,7 @@ export default function AboutPage() {
         </section>
 
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">📉 Data-Friendly Mode</h2>
+          <h2 className="text-2xl font-semibold text-white">Data-Friendly Mode</h2>
           <p className="text-gray-300">
             On a slow connection or just want focus?
             <span className="font-medium text-white"> Toggle off thumbnails</span> for a lightweight, distraction-free experience.
@@ -67,7 +67,7 @@ export default function AboutPage() {
         </section>
 
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">📊 Playlist Stats</h2>
+          <h2 className="text-2xl font-semibold text-white">Playlist Stats</h2>
           <p className="text-gray-300">
             Get insights at a glance, total likes, comments, views, and the
             <span className="font-medium text-white"> average video duration</span>.
@@ -76,7 +76,7 @@ export default function AboutPage() {
         </section>
 
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">🔐 Privacy First</h2>
+          <h2 className="text-2xl font-semibold text-white">Privacy First</h2>
           <p className="text-gray-300">
             This site doesn&apos;t track you. <span className="font-medium text-white">Saved playlists and settings stay only on your device</span>,
             no accounts, no nonsense.
@@ -84,7 +84,7 @@ export default function AboutPage() {
         </section>
 
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">🤝 Contribute</h2>
+          <h2 className="text-2xl font-semibold text-white">Contribute</h2>
           <p className="text-gray-300">
             Found a bug? Got a feature idea? Open an issue on{" "}
             <a
@@ -100,7 +100,7 @@ export default function AboutPage() {
         </section>
 
         <section className="space-y-6">
-          <h2 className="text-2xl font-semibold text-white">🚀 Roadmap</h2>
+          <h2 className="text-2xl font-semibold text-white">Roadmap</h2>
           <p className="text-gray-300">
             Coming soon: <span className="text-white font-medium">favoriting playlists, exporting data, custom sort settings</span>,
             and maybe even more surprises 👀.

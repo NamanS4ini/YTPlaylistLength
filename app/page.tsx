@@ -176,50 +176,50 @@ export default function Component() {
         )}
       </div>
       <section className="mt-16 max-w-3xl w-full text-zinc-300 space-y-8">
-        <h2 className="text-2xl font-semibold text-white">❓ Frequently Asked Questions</h2>
+        <h2 className="text-2xl font-semibold text-white">Frequently Asked Questions</h2>
 
         <div>
-          <h3 className="font-medium text-white mb-1">🔗 What kind of playlist URLs are supported?</h3>
-          <p>Any public YouTube playlist link works - just paste the full URL and hit Analyze.</p>
+          <h3 className="font-medium text-white mb-1"><span className="text-blue-400">Q:</span> What kind of playlist URLs are supported?</h3>
+          <p><span className="text-green-400">A:</span> Any public YouTube playlist link works - just paste the full URL and hit Analyze.</p>
         </div>
 
         <div>
-          <h3 className="font-medium text-white mb-1">🎯 What does Start/End Range mean?</h3>
+          <h3 className="font-medium text-white mb-1"><span className="text-blue-400">Q:</span> What does Start/End Range mean?</h3>
           <p>
-            If you only want to analyze a portion of the playlist, set a custom range.
+            <span className="text-green-400">A:</span> If you only want to analyze a portion of the playlist, set a custom range.
             For example, from video 5 to 20 - great for huge playlists.
           </p>
         </div>
 
         <div>
-          <h3 className="font-medium text-white mb-1">🚀 Can I sort videos or filter them?</h3>
+          <h3 className="font-medium text-white mb-1"><span className="text-blue-400">Q:</span> Can I sort videos or filter them?</h3>
           <p>
-            Yes! Once analyzed, you can sort videos by <span className="text-white font-semibold">length, likes, comments, views, and more</span>.
+            <span className="text-green-400">A:</span> Yes! Once analyzed, you can sort videos by <span className="text-white font-semibold">length, likes, comments, views, and more</span>.
           </p>
         </div>
 
         <div>
-          <h3 className="font-medium text-white mb-1">📦 Is it mobile-friendly?</h3>
-          <p>Absolutely, everything’s responsive and optimized for both desktops and phones.</p>
+          <h3 className="font-medium text-white mb-1"><span className="text-blue-400">Q:</span> Is it mobile-friendly?</h3>
+          <p><span className="text-green-400">A:</span> Absolutely, everything's responsive and optimized for both desktops and phones.</p>
         </div>
 
         <div>
-          <h3 className="font-medium text-white mb-1">📑 Can I save playlists for later?</h3>
+          <h3 className="font-medium text-white mb-1"><span className="text-blue-400">Q:</span> Can I save playlists for later?</h3>
           <p>
-            Yep! While viewing a playlist, just press{" "}
+            <span className="text-green-400">A:</span> Yep! While viewing a playlist, just press{" "}
             <CiBookmark size={20} className="inline text-current" />
-            and it’ll be saved for quick access later.
+            and it'll be saved for quick access later.
             <span className="block mt-1 text-zinc-400 text-sm">
-              🔒 All saved playlists stay only on <span className="text-white font-semibold">your device</span>,
+              All saved playlists stay only on <span className="text-white font-semibold">your device</span>,
               nothing is uploaded or stored on our servers.
             </span>
           </p>
         </div>
 
         <div>
-          <h3 className="font-medium text-white mb-1">💡 Found a bug or have a suggestion?</h3>
+          <h3 className="font-medium text-white mb-1"><span className="text-blue-400">Q:</span> Found a bug or have a suggestion?</h3>
           <p>
-            Feel free to open an issue on{" "}
+            <span className="text-green-400">A:</span> Feel free to open an issue on{" "}
             <a
               href="https://github.com/NamanS4ini/YTPlaylistLength"
               target="_blank"
@@ -228,7 +228,7 @@ export default function Component() {
             >
               GitHub
             </a>
-            . I might look at it... eventually 😄.
+            . I will look into that.
           </p>
         </div>
       </section>
