@@ -95,7 +95,6 @@ export default function PlaylistDetails() {
       setVideoData([...videoData].sort(sortFunction));
     }
   }
-
   // Handle bookmark
   function handleBookmark() {
     const savedPlaylists = JSON.parse(localStorage.getItem('bookmarks') || '[]');
