@@ -14,13 +14,18 @@ const Announcement = () => {
         {
             id: 2,
             message: `The website has moved to <a class="text-blue-400 underline hover:text-blue-300" href="https://ytpla.in">ytpla.in</a>. Please transfer your saved playlists by November 20th, 2025.`,
-            enabled: false,
+            enabled: true,
         },
         {
             id: 4,
             message: `Help me improve YT Playlist Analyzer by taking a quick <a class="text-blue-400 underline hover:text-blue-300" href="https://ytpla.in/feedback" target="_blank" rel="noopener noreferrer">user survey</a>. Your feedback matters!`,
             enabled: true,
         },
+        {
+            id: 5,
+            message: `New Feature: You can now sort in descending or ascending order! Just click the sort icon next to the dropdown.`,
+            enabled: true,
+        }
     ];
 
     const [dismissedIds, setDismissedIds] = useState<number[]>([]);
@@ -62,7 +67,7 @@ const Announcement = () => {
                     >
                         <div className="mx-auto flex items-center justify-between gap-4">
                             <div className="flex max-w-7xl items-center gap-3">
-                                <div className="hidden md:block flex-shrink-0">
+                                <div className="hidden md:block shrink-0">
                                     <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
                                         <svg
                                             className="w-6 h-6 text-blue-400"

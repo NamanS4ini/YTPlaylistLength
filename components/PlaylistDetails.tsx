@@ -38,9 +38,9 @@ export default function PlaylistDetails() {
 
   const params = useParams()
   const searchParams = useSearchParams();
-  
+
   let id = params.url as string
-  
+
   // Check if playlist ID is in query parameters first
   const listParam = searchParams.get('list');
   if (listParam) {
@@ -56,6 +56,7 @@ export default function PlaylistDetails() {
   const [videoData, setVideoData] = useState<VideoData[] | null>(null);
   const [playlistData, setPlaylistData] = useState<PlayListData | null>(null);
   const [error, setError] = useState<number | null>(null)
+  const [Reversed, setReversed] = useState<boolean>(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [thumbnail, setThumbnail] = useState<boolean>(false)
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
@@ -89,12 +90,19 @@ export default function PlaylistDetails() {
       comments: (a, b) => (b.comments || 0) - (a.comments || 0),
       duration: (a, b) => Number(b.duration || 0) - Number(a.duration || 0)
     };
-
+    setReversed(false);
     const sortFunction = sortFunctions[e.target.value];
     if (sortFunction) {
       setVideoData([...videoData].sort(sortFunction));
     }
   }
+
+  function handelReverse() {
+    if (!videoData) return;
+    setVideoData([...videoData].reverse());
+    setReversed(!Reversed);
+  }
+
   // Handle bookmark
   function handleBookmark() {
     const savedPlaylists = JSON.parse(localStorage.getItem('bookmarks') || '[]');
@@ -188,7 +196,7 @@ export default function PlaylistDetails() {
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 mb-6 min-w-60 max-w-md">
           <p className="text-sm text-zinc-500 font-bold mb-2">Error Details:</p>
-          <code className="text-red-400 text-sm font-bold break-words">{error}: {errorMsg}</code>
+          <code className="text-red-400 text-sm font-bold wrap-break-word">{error}: {errorMsg}</code>
         </div>
 
         <p className="text-sm text-zinc-400 mb-6 max-w-md">
@@ -308,15 +316,20 @@ export default function PlaylistDetails() {
           </h2>
           <div className='flex gap-10 justify-center md:justify-start items-center p-5'>
             <h2 className='text-2xl flex justify-between font-bold'>Sort By: </h2>
-            <select defaultValue="position" onChange={(e) => handelSort(e)} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option value="position">Playlist Order</option>
-              <option value="views">Views</option>
-              <option value="likes">Likes</option>
-              <option value="duration">Video Length</option>
-              <option value="comments">Comments</option>
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
-            </select>
+            <div className='flex gap-4 justify-center items-center'>
+              <select defaultValue="position" onChange={(e) => handelSort(e)} id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                <option value="position">Playlist Order</option>
+                <option value="views">Views</option>
+                <option value="likes">Likes</option>
+                <option value="duration">Video Length</option>
+                <option value="comments">Comments</option>
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+              </select>
+              <div className='flex justify-center items-center h-full'>
+                <button className='cursor-pointer' onClick={handelReverse}>{Reversed ? <Image className='' width={20} height={20} src="descending.svg" alt="Reversed" /> : <Image className='' width={20} height={20} src="ascending.svg" alt="Normal" />}</button>
+              </div>
+            </div>
           </div>
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-5 max-w-6xl w-full mx-auto'>
             {videoData.map((item, index) => (
