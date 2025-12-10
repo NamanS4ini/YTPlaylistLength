@@ -6,48 +6,45 @@ const errorMessages: Record<number, string> = {
 };
 
 function validateOrigin(req: Request) {
-const origin = req.headers.get("origin");
-const referer = req.headers.get("referer");
+  const origin = req.headers.get("origin");
+  const referer = req.headers.get("referer");
 
-const allowedOrigins = [
-process.env.WEBSITE_LINK,         // main site
-"chrome-extension://",            // chrome extension
-"moz-extension://",               // firefox extension
-null                              // content scripts
-].filter(Boolean);                 // remove undefined
+  // Allowed domains from env (comma separated)
+  const allowedOrigins = (process.env.WEBSITE_LINK ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
 
-// 1. Allow null origin (extensions often send null)
-if (origin === null) {
-return true;
+  // Quick allow for extension contexts or content scripts
+  if (origin === null) return true; // content script fetch sometimes shows origin null
+  if (origin.startsWith("chrome-extension://")) return true;
+  if (origin.startsWith("moz-extension://")) return true;
+
+  // Allow requests originating from youtube pages (content-script executed in page context)
+  if (origin.includes("youtube.com")) return true;
+
+  // Allow any env-listed origin (prod sites + localhost entries)
+  if (allowedOrigins.some((o) => origin.startsWith(o))) return true;
+
+  // Fallback: referer may contain a trusted host (some browsers set referer only)
+  if (referer && allowedOrigins.some((o) => referer.startsWith(o))) return true;
+
+  return false;
 }
 
-// 2. Allow chrome/firefox extensions
-if (origin.startsWith("chrome-extension://")) {
-return true;
-}
-if (origin.startsWith("moz-extension://")) {
-return true;
-}
-
-// 3. Allow your website
-if (allowedOrigins.includes(origin)) {
-return true;
+function corsHeaders(origin: string | null) {
+  return {
+    "Access-Control-Allow-Origin": origin ?? "*",
+    "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  };
 }
 
-// 4. Allow referer check fallback
-if (referer && allowedOrigins.some((o) => o && referer.startsWith(o))) {
-return true;
-}
-
-return false;
-}
 export async function GET(req: Request) {
   if (!validateOrigin(req)) {
-  return Response.json(
-    { message: "Forbidden" },
-    { status: 403 }
-  );
-}
+    return Response.json({ message: "Forbidden" }, { status: 403 });
+  }
+  const origin = req.headers.get("origin");
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
   const apiKey = process.env.API_KEY;
@@ -77,7 +74,7 @@ export async function GET(req: Request) {
     playlistData.items.push(...playlistData2.items);
     nextPageToken = playlistData2.nextPageToken || null;
   }
-  
+
   // Extract video IDs
   interface PlaylistItem {
     snippet: {
@@ -86,7 +83,7 @@ export async function GET(req: Request) {
       };
     };
   }
-  
+
   const videoIds = playlistData.items
     .map((item: PlaylistItem) => item.snippet.resourceId.videoId)
     .filter(Boolean);
@@ -94,20 +91,22 @@ export async function GET(req: Request) {
   // Fetch video durations in batches (max 50 per request)
   let totalSeconds = 0;
   const batchSize = 50;
-  
+
   for (let i = 0; i < videoIds.length; i += batchSize) {
     const batch = videoIds.slice(i, i + batchSize);
     const videoRes = await fetch(
-      `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${batch.join(",")}&key=${apiKey}`
+      `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${batch.join(
+        ","
+      )}&key=${apiKey}`
     );
-    
+
     if (videoRes.ok) {
       interface VideoItem {
         contentDetails: {
           duration: string;
         };
       }
-      
+
       const videoData = await videoRes.json();
       videoData.items.forEach((video: VideoItem) => {
         const duration = video.contentDetails.duration;
@@ -123,31 +122,37 @@ export async function GET(req: Request) {
   const playlistRes = await fetch(
     `https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=${id}&key=${apiKey}`
   );
-  
+
   let playlistTitle = "Unknown Playlist";
   if (playlistRes.ok) {
     const playlistInfo = await playlistRes.json();
     playlistTitle = playlistInfo.items[0]?.snippet?.title || "Unknown Playlist";
   }
 
-  return Response.json({
-    id: id,
-    title: playlistTitle,
-    totalDuration: totalDuration,
-    videoCount: videoIds.length,
-    url: `https://ytpla.in/${id}`
-  });
+  return Response.json(
+    {
+      id: id,
+      title: playlistTitle,
+      totalDuration: totalDuration,
+      videoCount: videoIds.length,
+      url: `https://ytpla.in/${id}`,
+    },
+    {
+      status: 200,
+      headers: corsHeaders(origin),
+    }
+  );
 }
 
 // Helper function to parse ISO 8601 duration format
 function parseDuration(duration: string): number {
   const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
   if (!match) return 0;
-  
+
   const hours = parseInt(match[1] || "0");
   const minutes = parseInt(match[2] || "0");
   const seconds = parseInt(match[3] || "0");
-  
+
   return hours * 3600 + minutes * 60 + seconds;
 }
 
@@ -156,11 +161,11 @@ function formatDuration(totalSeconds: number): string {
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
-  
+
   const parts = [];
-  if (hours > 0) parts.push(`${hours} hr`);
-  if (minutes > 0) parts.push(`${minutes} min`);
-  if (seconds > 0 && hours === 0) parts.push(`${seconds} sec`);
-  
-  return parts.join(" ") || "0 sec";
+  if (hours > 0) parts.push(`${hours}h`);
+  if (minutes > 0) parts.push(`${minutes}m`);
+  if (seconds > 0 && hours === 0) parts.push(`${seconds}s`);
+
+  return parts.join(" ") || "0s";
 }
