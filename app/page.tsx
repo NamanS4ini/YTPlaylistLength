@@ -192,6 +192,31 @@ export default function Component() {
         </div>
 
         <div>
+          <h3 className="font-medium text-white mb-1"><span className="text-blue-400">Q:</span> Is there a browser extension available?</h3>
+          <p>
+            <span className="text-green-400">A:</span> Yes! The extension is complete and available on{" "}
+            <a
+              href="https://addons.mozilla.org/en-US/firefox/addon/ytpla/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-blue-400"
+            >
+              Firefox
+            </a>
+            . For Chrome users, you&apos;ll need to install it manually from{" "}
+            <a
+              href="https://github.com/NamanS4ini/YTPLA-Extention?tab=readme-ov-file#installation"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-blue-400"
+            >
+              GitHub
+            </a>
+            {" "}due to Chrome&apos;s developer fee requirements.
+          </p>
+        </div>
+
+        <div>
           <h3 className="font-medium text-white mb-1"><span className="text-blue-400">Q:</span> Can I sort videos or filter them?</h3>
           <p>
             <span className="text-green-400">A:</span> Yes! Once analyzed, you can sort videos by <span className="text-white font-semibold">length, likes, comments, views, and more</span>.

@@ -6,26 +6,11 @@ import { IoClose } from "react-icons/io5";
 const Announcement = () => {
     // Edit this array to manage announcements
     const announcements = [
-        {
-            id: 1,
-            message: `Replace youtube.com with ytpla.in in any playlist URL for instant analysis`,
-            enabled: true,
+        { 
+            id: 99, 
+            message: `The extension is complete and ready to use! Install it on <a href="https://addons.mozilla.org/en-US/firefox/addon/ytpla/" target="_blank" rel="noopener noreferrer" class="text-blue-400 underline">Firefox</a> directly from the add-ons store. For Chrome users, you'll need to install it manually from <a href="https://github.com/NamanS4ini/YTPLA-Extention?tab=readme-ov-file#installation" target="_blank" rel="noopener noreferrer" class="text-blue-400 underline">GitHub</a> due to Chrome's developer fee requirements.`, 
+            enabled: false 
         },
-        {
-            id: 2,
-            message: `The website has moved to <a class="text-blue-400 underline hover:text-blue-300" href="https://ytpla.in">ytpla.in</a>. Please transfer your saved playlists by November 20th, 2025.`,
-            enabled: true,
-        },
-        {
-            id: 4,
-            message: `Help me improve YT Playlist Analyzer by taking a quick <a class="text-blue-400 underline hover:text-blue-300" href="https://ytpla.in/feedback" target="_blank" rel="noopener noreferrer">user survey</a>. Your feedback matters!`,
-            enabled: true,
-        },
-        {
-            id: 5,
-            message: `New Feature: You can now sort in descending or ascending order! Just click the sort icon next to the dropdown.`,
-            enabled: true,
-        }
     ];
 
     const [dismissedIds, setDismissedIds] = useState<number[]>([]);

@@ -59,6 +59,31 @@ export default function AboutPage() {
         </section>
 
         <section className="space-y-6">
+          <h2 className="text-2xl font-semibold text-white">Browser Extension</h2>
+          <p className="text-gray-300">
+            The extension is complete and ready to use! Install it on{" "}
+            <a
+              href="https://addons.mozilla.org/en-US/firefox/addon/ytpla/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 underline"
+            >
+              Firefox
+            </a>{" "}
+            directly from the add-ons store. For Chrome users, you&apos;ll need to install it manually from{" "}
+            <a
+              href="https://github.com/NamanS4ini/YTPLA-Extention?tab=readme-ov-file#installation"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 underline"
+            >
+              GitHub
+            </a>{" "}
+            due to Chrome&apos;s developer fee requirements.
+          </p>
+        </section>
+
+        <section className="space-y-6">
           <h2 className="text-2xl font-semibold text-white">Data-Friendly Mode</h2>
           <p className="text-gray-300">
             On a slow connection or just want focus?
