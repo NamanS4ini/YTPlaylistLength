@@ -9,7 +9,7 @@ const Announcement = () => {
         { 
             id: 99, 
             message: `The extension is complete and ready to use! Install it on <a href="https://addons.mozilla.org/en-US/firefox/addon/ytpla/" target="_blank" rel="noopener noreferrer" class="text-blue-400 underline">Firefox</a> directly from the add-ons store. For Chrome users, you'll need to install it manually from <a href="https://github.com/NamanS4ini/YTPLA-Extention?tab=readme-ov-file#installation" target="_blank" rel="noopener noreferrer" class="text-blue-400 underline">GitHub</a> due to Chrome's developer fee requirements.`, 
-            enabled: false 
+            enabled: false
         },
     ];
 
@@ -78,7 +78,7 @@ const Announcement = () => {
                             </div>
                             <button
                                 onClick={() => handleClose(announcement.id)}
-                                className="flex-shrink-0 p-2 hover:bg-zinc-700 rounded-lg transition-colors cursor-pointer duration-200 group"
+                                className="shrink-0 p-2 hover:bg-zinc-700 rounded-lg transition-colors cursor-pointer duration-200 group"
                                 aria-label="Close announcement"
                             >
                                 <IoClose className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
