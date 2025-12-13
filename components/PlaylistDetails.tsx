@@ -9,6 +9,7 @@ import { FaExclamationTriangle } from 'react-icons/fa';
 import { FaBookmark } from 'react-icons/fa';
 import { CiBookmark } from "react-icons/ci";
 import { PropagateLoader } from 'react-spinners';
+import { ImageLoaderProps } from "next/image";
 
 
 //Type for videoData received from backend
@@ -61,6 +62,16 @@ export default function PlaylistDetails() {
   const [thumbnail, setThumbnail] = useState<boolean>(false)
   const [isBookmarked, setIsBookmarked] = useState<boolean>(false);
   const [speed, setSpeed] = useState<string>("1")
+
+
+
+// Use custom image loader to optimize thumbnail loading
+const wsrvLoader = ({ src, width, quality }: ImageLoaderProps) => {
+  const encoded = encodeURIComponent(src);
+  return `https://wsrv.nl/?url=${encoded}&w=${width}&q=${quality || 75}`;
+};
+
+
 
 
   function convertToHrs(seconds: number) {
@@ -346,7 +357,7 @@ export default function PlaylistDetails() {
                   </div>
                   <div className='relative'>
 
-                    {thumbnail && <Image width={330} height={250} src={item.thumbnail || ''} alt={item.title} className='rounded-lg mb-2' />}
+                    {thumbnail && <Image loader={wsrvLoader} width={330} height={250} src={item.thumbnail || ''} alt={item.title} className='rounded-lg mb-2' />}
 
                     {thumbnail && <p className='absolute bottom-10 bg-black p-1 rounded-md text-sm right-1'>
                       {item.duration ? convertToHrs(Number(item.duration)) : "0"}
