@@ -12,8 +12,7 @@ export default function Component() {
   const router = useRouter();
   const [validated, setValidated] = useState(false);
   const validateURL = (url: string) => {
-
-    if (start > end && end != "") {
+    if (Number(start) > Number(end) && end != "") {
       toast.warn('Start Can not be greater than end', {
         position: "top-right",
         autoClose: 5000,
