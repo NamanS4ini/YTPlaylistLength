@@ -16,6 +16,10 @@ export const metadata: Metadata = {
     title: "Feedback - YouTube Playlist Analyzer",
     description: "Provide your valuable feedback to help improve YouTube Playlist Analyzer. Share your thoughts and suggestions to enhance your playlist management experience.",
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 const Feedback = () => {

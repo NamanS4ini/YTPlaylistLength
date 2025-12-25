@@ -18,54 +18,49 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "YouTube Playlist Analyzer",
-  description: "Free YouTube playlist analyzer tool. Instantly calculate total duration, average video length, and playlist statistics. Get accurate time estimates for YouTube playlists.",
-  keywords: "YouTube playlist analyzer, playlist duration, YouTube playlist length, video duration analyzer, playlist statistics, YouTube tools",
+  metadataBase: new URL("https://ytpla.in"),
+
+  title: {
+    default: "YouTube Playlist Analyzer",
+    template: "%s | YTPLA",
+  },
+
+  description:
+    "Analyze YouTube playlists and calculate total duration, average video length, and playlist statistics.",
+
   authors: [{ name: "Naman Saini" }],
   creator: "Naman Saini",
   publisher: "YouTube Playlist Analyzer",
-  metadataBase: new URL('https://ytpla.in'),
-  alternates: {
-    canonical: '/',
-  },
+
   openGraph: {
-    title: "YouTube Playlist Analyzer",
-    description: "Free YouTube playlist analyzer tool. Instantly calculate total duration, average video length, and playlist statistics.",
-    url: '/',
-    siteName: 'YouTube Playlist Analyzer',
-    type: 'website',
-    locale: 'en_US',
+    siteName: "YouTube Playlist Analyzer",
+    type: "website",
+    locale: "en_US",
     images: [
       {
-        url: '/og-image.jpg',
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: 'YouTube Playlist Analyzer',
+        alt: "YouTube Playlist Analyzer",
       },
     ],
   },
+
   twitter: {
-    card: 'summary_large_image',
-    title: "YouTube Playlist Analyzer",
-    description: "Free YouTube playlist analyzer tool. Instantly calculate total duration, average video length, and playlist statistics.",
-    images: ['/og-image.jpg'],
-    creator: '@NamanS4ini',
+    card: "summary_large_image",
+    creator: "@NamanS4ini",
+    images: ["/og-image.png"],
   },
+
   robots: {
-    index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
   },
+
   verification: {
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "",
   },
-  category: 'technology',
+
+  category: "technology",
 };
 
 

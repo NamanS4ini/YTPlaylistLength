@@ -15,6 +15,10 @@ export const metadata: Metadata = {
     title: "Saved Playlists",
     description: "Manage and track your saved YouTube playlists with detailed duration analytics.",
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function SavedPlaylistPage() {

@@ -7,6 +7,9 @@ import React from "react";
 export const metadata: Metadata = {
   title: "About - YouTube Playlist Length Calculator",
   description: "Discover powerful playlist management features: sort by duration, views, likes, calculate watch times at different speeds, and get detailed playlist statistics - all while keeping your privacy first.",
+  alternates: {
+    canonical: "https://ytpla.in/about"
+  },
   keywords: ["YouTube playlist", "playlist length", "video duration", "playlist calculator", "YouTube tools", "playlist analytics"],
   openGraph: {
     title: "About - YouTube Playlist Length Calculator",
